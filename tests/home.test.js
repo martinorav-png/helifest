@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { renderPaperHero, renderPaperHomepage } from '../src/home.js';
 
 const copy = {
@@ -44,6 +44,20 @@ test('renderPaperHomepage removes the previous homepage structures', () => {
   assert.doesNotMatch(markup, /venue-feature-map/);
   assert.doesNotMatch(markup, /icon-strip/);
   assert.doesNotMatch(markup, /placeholder-icon/);
+});
+
+test('all absolute homepage asset URLs are available from the public asset root', () => {
+  const requiredAssets = [
+    'public/assets/helilogo2.png',
+    'public/assets/heli-star-dark.svg',
+    'public/assets/heli-star-light.svg',
+    'public/assets/paper-map.png',
+    'public/assets/paper-wordmark.png',
+    'public/assets/paavli-night.png',
+    'public/assets/sponsors/tallinn.png',
+  ];
+
+  requiredAssets.forEach((asset) => assert.equal(existsSync(new URL(`../${asset}`, import.meta.url)), true, asset));
 });
 
 test('the application mounts only the Paper homepage renderer', () => {
