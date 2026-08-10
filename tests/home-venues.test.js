@@ -50,7 +50,8 @@ test('getPaperVenue finds HALL and falls back to Paavli for an unknown ID', () =
 test('markers mark HALL as active and expose their positional contract', () => {
   const markup = renderPaperVenueMarkers('hall');
 
-  assert.equal((markup.match(/<button\b/g) || []).length, 11);
+  assert.equal((markup.match(/<button\b/g) || []).length, 8);
+  assert.doesNotMatch(markup, /data-venue-id="future-0[1-3]"/);
   assert.match(markup, /data-venue-id="hall"[^>]*aria-pressed="true"[^>]*style="--marker-x: 366; --marker-y: 158;"/);
   assert.equal((markup.match(/aria-pressed="true"/g) || []).length, 1);
 });

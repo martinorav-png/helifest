@@ -25,7 +25,7 @@ test('renderPaperHomepage returns the complete Paper finale composition', () => 
   assert.doesNotMatch(markup, /paper-sponsor-crop|paper-sponsor-source|\/assets\/heli-sponsors\.png/);
   assert.match(markup, /class="paper-open-call"/);
   assert.match(markup, /class="paper-map-stage"/);
-  assert.equal((markup.match(/class="paper-map-marker"/g) || []).length, 11);
+  assert.equal((markup.match(/class="paper-map-marker"/g) || []).length, 8);
   assert.doesNotMatch(markup, /href="#(?:programme|tickets|transport|info|venues|home)"/);
   assert.match(markup, /<button class="paper-nav-link" type="button">Ajakava<\/button>/);
   assert.match(markup, /<button class="paper-nav-link" type="button">Piletid<\/button>/);

@@ -49,5 +49,8 @@ export function renderPaperVenuePanel(record) {
 export function renderPaperVenueMarkers(activeId = 'paavli') {
   const activeVenue = getPaperVenue(activeId);
 
-  return paperVenueRecords.map((venue) => `<button type="button" class="paper-map-marker" data-venue-id="${venue.id}" aria-label="${venue.name}, ${venue.address}" aria-pressed="${venue.id === activeVenue.id}" style="--marker-x: ${venue.x}; --marker-y: ${venue.y};"></button>`).join('');
+  return paperVenueRecords
+    .filter((venue) => !venue.isPlaceholder)
+    .map((venue) => `<button type="button" class="paper-map-marker" data-venue-id="${venue.id}" aria-label="${venue.name}, ${venue.address}" aria-pressed="${venue.id === activeVenue.id}" style="--marker-x: ${venue.x}; --marker-y: ${venue.y};"></button>`)
+    .join('');
 }
