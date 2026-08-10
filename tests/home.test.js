@@ -26,13 +26,12 @@ test('renderPaperHomepage returns the complete Paper finale composition', () => 
   assert.match(markup, /class="paper-open-call"/);
   assert.match(markup, /class="paper-map-stage"/);
   assert.equal((markup.match(/class="paper-map-marker"/g) || []).length, 11);
-  assert.match(markup, /href="#programme"/);
-  assert.match(markup, /href="#tickets"/);
-  assert.match(markup, /<a href="#programme">Ajakava<\/a>/);
-  assert.match(markup, /<a href="#tickets">Piletid<\/a>/);
-  assert.match(markup, /<a href="#transport">Transport<\/a>/);
-  assert.match(markup, /<a href="#info">Meist<\/a>/);
-  assert.match(markup, /<a href="#info">FAQ<\/a>/);
+  assert.doesNotMatch(markup, /href="#(?:programme|tickets|transport|info|venues|home)"/);
+  assert.match(markup, /<button class="paper-nav-link" type="button">Ajakava<\/button>/);
+  assert.match(markup, /<button class="paper-nav-link" type="button">Piletid<\/button>/);
+  assert.match(markup, /<button class="paper-nav-link" type="button">Transport<\/button>/);
+  assert.match(markup, /<button class="paper-nav-link" type="button">Meist<\/button>/);
+  assert.match(markup, /<button class="paper-nav-link" type="button">FAQ<\/button>/);
   assert.match(markup, /Paavli Kultuurivabrik/);
   assert.match(markup, /class="paper-sponsors"/);
   assert.match(markup, /class="paper-closing-gradient"/);
@@ -60,6 +59,7 @@ test('the application mounts only the Paper homepage renderer', () => {
   assert.match(source, /cleanupPaperVenueMap = bindPaperVenueMap\(main\);/);
   assert.match(source, /cleanupSponsorLoop = mountSponsorLoop\(main\.querySelector\('\[data-sponsor-loop-root\]'\)\);/);
   assert.match(source, /renderPaperHomepage\(/);
+  assert.doesNotMatch(source, /hashchange|programmeView|venuesView|venueView|artistsView|artistView|ticketsView|transportView|infoView/);
   assert.doesNotMatch(source, /renderMarquee|renderVenueFeature|renderVisitorHero/);
 });
 
@@ -78,9 +78,9 @@ test('renderPaperHero provides an accessible live-text Paper composition', () =>
   assert.match(markup, /<h1 class="paper-hero-title" id="paper-hero-title">Tallinna<br>klubiskeene<br>showcase<br>festival<\/h1>/);
   assert.match(markup, /<p class="paper-hero-date" aria-label="16–17 oktoober"><span>16–17<\/span><span>oktoober<\/span><\/p>/);
   assert.match(markup, /<p class="paper-hero-summary">Üks pilet kaheks õhtuks avastada Tallinna peidetud pärleid\.<\/p>/);
-  assert.match(markup, /<a class="paper-programme-hit" href="#programme">Vaata programmi<\/a>/);
-  assert.match(markup, /<a class="paper-hero-ticket" href="#tickets">Osta pilet<\/a>/);
-  assert.match(markup, /<a class="paper-open-call" href="#venues" aria-label="Open call"><span>Open call<\/span><\/a>/);
+  assert.match(markup, /<button class="paper-programme-hit" type="button">Vaata programmi<\/button>/);
+  assert.match(markup, /<button class="paper-hero-ticket" type="button">Osta pilet<\/button>/);
+  assert.match(markup, /<button class="paper-open-call" type="button" aria-label="Open call"><span>Open call<\/span><\/button>/);
   assert.equal((markup.match(/<img\b/g) || []).length, 1);
   assert.doesNotMatch(markup, /visitor-hero\.png|paper-hero-art/);
 });
@@ -159,7 +159,7 @@ test('the ticket banners scroll continuously and buttons invert on hover', () =>
   assert.match(css, /\.paper-ticket-marquee\s*\{[^}]*animation-name:\s*paper-ticket-scroll;[^}]*animation-timing-function:\s*linear;[^}]*animation-iteration-count:\s*infinite;/s);
   assert.match(css, /\.paper-ticket-ticker--light \.paper-ticket-marquee\s*\{[^}]*animation-direction:\s*reverse;/s);
   assert.match(css, /\.paper-hero-ticket:hover[^}]*background:\s*#000000;[^}]*color:\s*#ffffff;/s);
-  assert.match(css, /\.paper-ticket-cta a:hover[^}]*background:\s*#000000;[^}]*color:\s*#ffffff;/s);
+  assert.match(css, /\.paper-ticket-cta button:hover[^}]*background:\s*#000000;[^}]*color:\s*#ffffff;/s);
   assert.match(css, /\.paper-open-call:hover[^}]*background:\s*#ffffff;[^}]*color:\s*#000000;/s);
   assert.match(css, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.paper-ticket-marquee\s*\{[^}]*animation:\s*none;/s);
 });
@@ -176,10 +176,10 @@ test('the paper ticker loops gap-free and header links use motion-safe underline
   assert.match(css, /\.paper-ticket-track\s*\{[^}]*gap:\s*10px;[^}]*padding-right:\s*10px;/s);
   assert.doesNotMatch(css, /\.paper-ticket-ticker--light\s*\{[^}]*justify-content:\s*flex-end;/s);
   assert.doesNotMatch(css, /\.paper-ticket-ticker--light[^}]*margin-(?:left|right):\s*auto;/s);
-  assert.match(css, /\.paper-header nav a\s*\{[^}]*position:\s*relative;/s);
-  assert.match(css, /\.paper-header nav a::after\s*\{[^}]*bottom:\s*-1px;[^}]*width:\s*100%;[^}]*height:\s*1px;[^}]*transform:\s*scaleX\(0\);[^}]*transform-origin:\s*left center;[^}]*transition:\s*transform var\(--duration-fast\) var\(--ease-smooth-out\);/s);
-  assert.match(css, /\.paper-header nav a:hover::after,\s*\.paper-header nav a:focus-visible::after\s*\{\s*transform:\s*scaleX\(1\);\s*\}/s);
-  assert.match(css, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.paper-header nav a::after\s*\{[^}]*transition:\s*none;/s);
+  assert.match(css, /\.paper-header nav \.paper-nav-link\s*\{[^}]*position:\s*relative;/s);
+  assert.match(css, /\.paper-header nav \.paper-nav-link::after\s*\{[^}]*bottom:\s*-1px;[^}]*width:\s*100%;[^}]*height:\s*1px;[^}]*transform:\s*scaleX\(0\);[^}]*transform-origin:\s*left center;[^}]*transition:\s*transform var\(--duration-fast\) var\(--ease-smooth-out\);/s);
+  assert.match(css, /\.paper-header nav \.paper-nav-link:hover::after,\s*\.paper-header nav \.paper-nav-link:focus-visible::after\s*\{\s*transform:\s*scaleX\(1\);\s*\}/s);
+  assert.match(css, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.paper-header nav \.paper-nav-link::after\s*\{[^}]*transition:\s*none;/s);
 });
 
 test('the Vite project exposes a production build command', () => {

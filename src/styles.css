@@ -112,7 +112,7 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
 .paper-wordmark { width: 123px; height: 27px; display: block; flex: 0 0 123px; }
 .paper-wordmark img { display: block; width: 123px; height: 27px; }
 .paper-header nav { display: flex; align-items: center; justify-content: center; gap: 60px; }
-.paper-header nav a {
+.paper-header nav .paper-nav-link {
   position: relative;
   color: #ffffff;
   font-family: 'Inter', Arial, sans-serif;
@@ -123,8 +123,12 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
   text-decoration: none;
   text-transform: uppercase;
   white-space: nowrap;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
 }
-.paper-header nav a::after {
+.paper-header nav .paper-nav-link::after {
   content: '';
   position: absolute;
   left: 0;
@@ -136,8 +140,8 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
   transform-origin: left center;
   transition: transform var(--duration-fast) var(--ease-smooth-out);
 }
-.paper-header nav a:hover::after,
-.paper-header nav a:focus-visible::after { transform: scaleX(1); }
+.paper-header nav .paper-nav-link:hover::after,
+.paper-header nav .paper-nav-link:focus-visible::after { transform: scaleX(1); }
 .paper-ticket-ticker {
   width: 1280px;
   height: 40px;
@@ -474,7 +478,7 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
   height: 164px;
   flex: 0 0 164px;
 }
-.paper-ticket-cta a {
+.paper-ticket-cta button {
   position: absolute;
   left: 1068px;
   top: 40px;
@@ -491,10 +495,11 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
   font-weight: 400;
   line-height: 28px;
   text-decoration: none;
+  cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-smooth-out), color var(--duration-fast) var(--ease-smooth-out);
 }
-.paper-ticket-cta a:hover,
-.paper-ticket-cta a:focus-visible {
+.paper-ticket-cta button:hover,
+.paper-ticket-cta button:focus-visible {
   background: #000000;
   color: #ffffff;
 }
@@ -526,9 +531,9 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
   max-width: 100%;
 }
 .paper-closing-gradient { width: 1280px; height: 602px; flex: 0 0 602px; }
-.paper-header a:focus-visible,
-.paper-hero a:focus-visible,
-.paper-ticket-cta a:focus-visible { outline: 3px solid #ff90da; outline-offset: 3px; }
+.paper-header button:focus-visible,
+.paper-hero button:focus-visible,
+.paper-ticket-cta button:focus-visible { outline: 3px solid #ff90da; outline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) {
   .paper-homepage-canvas { scroll-behavior: auto; }
@@ -537,9 +542,9 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
   .paper-programme-hit,
   .paper-hero-ticket,
   .paper-open-call,
-  .paper-ticket-cta a,
+  .paper-ticket-cta button,
   .paper-map-marker,
   .paper-map-marker::before,
   .paper-venue-content,
-  .paper-header nav a::after { transition: none; }
+  .paper-header nav .paper-nav-link::after { transition: none; }
 }

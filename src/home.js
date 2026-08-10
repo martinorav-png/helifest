@@ -10,11 +10,11 @@ export function renderPaperMarquee(text, label, tone = 'dark') {
 }
 
 export function renderPaperHero() {
-  return `<section class="paper-hero" aria-labelledby="paper-hero-title"><img class="paper-hero-mark" src="/assets/helilogo2.png" alt="HELI"><h1 class="paper-hero-title" id="paper-hero-title">Tallinna<br>klubiskeene<br>showcase<br>festival</h1><p class="paper-hero-date" aria-label="16–17 oktoober"><span>16–17</span><span>oktoober</span></p><p class="paper-hero-summary">Üks pilet kaheks õhtuks avastada Tallinna peidetud pärleid.</p><a class="paper-programme-hit" href="#programme">Vaata programmi</a><a class="paper-hero-ticket" href="#tickets">Osta pilet</a><a class="paper-open-call" href="#venues" aria-label="Open call"><span>Open call</span></a></section>`;
+  return `<section class="paper-hero" aria-labelledby="paper-hero-title"><img class="paper-hero-mark" src="/assets/helilogo2.png" alt="HELI"><h1 class="paper-hero-title" id="paper-hero-title">Tallinna<br>klubiskeene<br>showcase<br>festival</h1><p class="paper-hero-date" aria-label="16–17 oktoober"><span>16–17</span><span>oktoober</span></p><p class="paper-hero-summary">Üks pilet kaheks õhtuks avastada Tallinna peidetud pärleid.</p><button class="paper-programme-hit" type="button">Vaata programmi</button><button class="paper-hero-ticket" type="button">Osta pilet</button><button class="paper-open-call" type="button" aria-label="Open call"><span>Open call</span></button></section>`;
 }
 
 export function renderPaperHeroAnimated() {
-  return `<section class="paper-hero" aria-labelledby="paper-hero-title"><div class="paper-hero-mark">${animatedLogo()}</div><h1 class="paper-hero-title" id="paper-hero-title">Tallinna<br>klubiskeene<br>showcase<br>festival</h1><p class="paper-hero-date" aria-label="16-17 oktoober"><span>16-17</span><span>oktoober</span></p><p class="paper-hero-summary">Uks pilet kaheks ohtuks avastada Tallinna peidetud parleid.</p><a class="paper-programme-hit" href="#programme">Vaata programmi</a><a class="paper-hero-ticket" href="#tickets">Osta pilet</a><a class="paper-open-call" href="#venues" aria-label="Open call"><span>Open call</span></a></section>`;
+  return `<section class="paper-hero" aria-labelledby="paper-hero-title"><div class="paper-hero-mark">${animatedLogo()}</div><h1 class="paper-hero-title" id="paper-hero-title">Tallinna<br>klubiskeene<br>showcase<br>festival</h1><p class="paper-hero-date" aria-label="16-17 oktoober"><span>16-17</span><span>oktoober</span></p><p class="paper-hero-summary">Uks pilet kaheks ohtuks avastada Tallinna peidetud parleid.</p><button class="paper-programme-hit" type="button">Vaata programmi</button><button class="paper-hero-ticket" type="button">Osta pilet</button><button class="paper-open-call" type="button" aria-label="Open call"><span>Open call</span></button></section>`;
 }
 
 export function renderPaperVenue() {
@@ -22,7 +22,7 @@ export function renderPaperVenue() {
 }
 
 export function renderPaperTicketCta() {
-  return `<section class="paper-ticket-cta" aria-label="Tickets"><a href="#tickets">Piletid</a></section>`;
+  return `<section class="paper-ticket-cta" aria-label="Tickets"><button type="button">Piletid</button></section>`;
 }
 
 export function renderPaperSponsors(label) {
@@ -33,6 +33,6 @@ export function renderPaperHomepage(copy = {}) {
   const marquee = copy.marquee || 'GET YOUR TICKET NOW';
   const marqueeLabel = copy.marqueeLabel || 'Festival tickets';
   const sponsorsLabel = copy.sponsorsLabel || 'HELI venues and partners';
-  const header = `<header class="paper-header"><a class="paper-wordmark" href="#home" aria-label="HELI"><img src="/assets/paper-wordmark.png" alt="HELI"></a><nav aria-label="Primary"><a href="#programme">Ajakava</a><a href="#tickets">Piletid</a><a href="#transport">Transport</a><a href="#info">Meist</a><a href="#info">FAQ</a></nav></header>`;
+  const header = `<header class="paper-header"><div class="paper-wordmark" role="img" aria-label="HELI"><img src="/assets/paper-wordmark.png" alt=""></div><nav aria-label="Primary"><button class="paper-nav-link" type="button">Ajakava</button><button class="paper-nav-link" type="button">Piletid</button><button class="paper-nav-link" type="button">Transport</button><button class="paper-nav-link" type="button">Meist</button><button class="paper-nav-link" type="button">FAQ</button></nav></header>`;
   return `<div class="paper-homepage-shell"><div class="paper-homepage-canvas">${header}${renderPaperMarquee(marquee, marqueeLabel, 'dark')}${renderPaperMarquee(marquee, marqueeLabel, 'light')}${renderPaperHeroAnimated()}${renderPaperVenue()}${renderPaperTicketCta()}${renderPaperSponsors(sponsorsLabel)}<div class="paper-closing-gradient" aria-hidden="true"></div></div></div>`;
 }
