@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HELI pin dropper</title>
+    <style>
+      :root {
+        --ink: #080808;
+        --paper: #f7f7f5;
+        --muted: #6e6e6a;
+        --accent: #ff90da;
+        --line: #d8d8d4;
+        --stage-w: 673;
+        --stage-h: 522;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; background: var(--paper); color: var(--ink); }
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        display: grid;
+        grid-template-columns: minmax(280px, 340px) 1fr;
+        min-height: 100vh;
+      }
+
+      aside {
+        border-right: 1px solid var(--ink);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        background: #fff;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: -0.04em;
+        line-height: 1;
+      }
+
+      p.lede {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      label.field {
+        display: grid;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .map-controls {
+        display: grid;
+        gap: 8px;
+      }
+
+      .upload-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+      }
+
+      .upload-row input[type="file"] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        overflow: hidden;
+      }
+
+      .upload-row label.buttony,
+      .upload-row button {
+        height: 40px;
+        border: 1px solid var(--ink);
+        background: var(--paper);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 12px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .upload-row label.buttony:hover,
+      .upload-row button:hover {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+
+      .upload-name {
+        font-size: 12px;
+        color: var(--muted);
+        text-transform: none;
+        letter-spacing: 0;
+        font-weight: 400;
+        word-break: break-all;
+      }
+
+      select, button, textarea {
+        font: inherit;
+      }
+
+      select {
+        width: 100%;
+        height: 40px;
+        border: 1px solid var(--ink);
+        background: var(--paper);
+        padding: 0 10px;
+      }
+
+      .venue-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        overflow: auto;
+        max-height: 42vh;
+      }
+
+      .venue-list button {
+        width: 100%;
+        text-align: left;
+        border: 1px solid var(--line);
+        background: var(--paper);
+        padding: 10px 12px;
+        cursor: pointer;
+        display: grid;
+        gap: 2px;
+      }
+
+      .venue-list button strong {
+        font-size: 14px;
+      }
+
+      .venue-list button span {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .venue-list button[aria-pressed="true"] {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: #fff;
+      }
+
+      .venue-list button[aria-pressed="true"] span { color: #cfcfcf; }
+
+      .venue-list button.is-placed::after {
+        content: "placed";
+        justify-self: start;
+        margin-top: 4px;
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .actions button,
+      .primary {
+        height: 40px;
+        border: 1px solid var(--ink);
+        background: #fff;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .primary {
+        grid-column: 1 / -1;
+        background: var(--ink);
+        color: #fff;
+      }
+
+      .actions button:hover,
+      .primary:hover { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+      textarea {
+        width: 100%;
+        min-height: 160px;
+        border: 1px solid var(--ink);
+        background: var(--paper);
+        padding: 10px;
+        font-family: ui-monospace, Consolas, monospace;
+        font-size: 11px;
+        line-height: 1.4;
+        resize: vertical;
+      }
+
+      .status {
+        font-size: 12px;
+        color: var(--muted);
+        min-height: 1.2em;
+      }
+
+      main {
+        padding: 20px;
+        display: grid;
+        align-content: start;
+        gap: 12px;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .toolbar .hint {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .stage-wrap {
+        border: 1px solid var(--ink);
+        background:
+          linear-gradient(45deg, #ecece8 25%, transparent 25%),
+          linear-gradient(-45deg, #ecece8 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #ecece8 75%),
+          linear-gradient(-45deg, transparent 75%, #ecece8 75%);
+        background-size: 16px 16px;
+        background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+        overflow: auto;
+        max-height: calc(100vh - 80px);
+      }
+
+      .stage {
+        position: relative;
+        width: min(100%, 1100px);
+        margin: 0 auto;
+        aspect-ratio: var(--stage-w) / var(--stage-h);
+        background: #111;
+        cursor: crosshair;
+        user-select: none;
+      }
+
+      .stage img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        pointer-events: none;
+        image-rendering: pixelated;
+      }
+
+      .pin {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        margin: -7px 0 0 -7px;
+        border: 0;
+        padding: 0;
+        background: #fff;
+        box-shadow: 0 0 0 1px #000;
+        cursor: grab;
+      }
+
+      .pin[aria-current="true"] { background: var(--accent); }
+      .pin:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+      .pin-label {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        white-space: nowrap;
+        font-size: 11px;
+        font-weight: 700;
+        background: #fff;
+        border: 1px solid #000;
+        padding: 2px 6px;
+        pointer-events: none;
+      }
+
+      @media (max-width: 900px) {
+        body { grid-template-columns: 1fr; }
+        aside { border-right: 0; border-bottom: 1px solid var(--ink); }
+        .venue-list { max-height: 220px; }
+      }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <div>
+        <h1>HELI pin dropper</h1>
+        <p class="lede">Upload a map (or pick a preset), select a venue, click to pin. Drag to nudge. Export coords for the homepage stage (673×522).</p>
+      </div>
+
+      <div class="map-controls">
+        <label class="field">
+          Base map
+          <select id="map-select">
+            <option value="/assets/tallinn4.png">tallinn4.png</option>
+            <option value="/assets/tallinn5.png">tallinn5.png</option>
+            <option value="/assets/tallinn3.png">tallinn3.png</option>
+            <option value="/assets/tallinn2.png">tallinn2.png</option>
+            <option value="/assets/tallinmapupdated.png">tallinmapupdated.png</option>
+            <option value="/assets/pixelmaplite.png">pixelmaplite.png</option>
+            <option value="/assets/tallinnpixeled.png">tallinnpixeled.png</option>
+            <option value="/assets/paper-map.png">paper-map.png (legacy)</option>
+            <option value="__upload__" id="upload-option" hidden>Uploaded image</option>
+          </select>
+        </label>
+        <div class="upload-row">
+          <label class="buttony" for="map-upload">Upload map image</label>
+          <input id="map-upload" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+          <button type="button" id="clear-upload" hidden>Clear upload</button>
+        </div>
+        <p class="upload-name" id="upload-name"></p>
+      </div>
+
+      <div>
+        <p class="lede" style="margin-bottom:8px">Venues</p>
+        <ul class="venue-list" id="venue-list"></ul>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="clear-active">Clear active</button>
+        <button type="button" id="clear-all">Clear all</button>
+        <button type="button" class="primary" id="copy-json">Copy JSON</button>
+        <button type="button" class="primary" id="copy-seeds">Copy venueSeeds snippet</button>
+      </div>
+
+      <label class="field">
+        Export
+        <textarea id="export" readonly spellcheck="false"></textarea>
+      </label>
+      <p class="status" id="status" aria-live="polite"></p>
+    </aside>
+
+    <main>
+      <div class="toolbar">
+        <div class="hint" id="hint">Select a venue, then click the map.</div>
+        <div class="hint" id="cursor-readout">x: - &nbsp; y: -</div>
+      </div>
+      <div class="stage-wrap">
+        <div class="stage" id="stage" role="application" aria-label="Map pin dropper">
+          <img id="map-image" src="/assets/tallinmapupdated.png" alt="Tallinn map base" />
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const STAGE_W = 673;
+      const STAGE_H = 522;
+      const STORAGE_KEY = 'heli-pin-dropper-v2';
+
+      const venues = [
+        { id: 'paavli', name: 'Paavli Kultuurivabrik', address: 'Paavli tn 7' },
+        { id: 'ida', name: 'IDA', address: 'Telliskivi tn 60a-5' },
+        { id: 'hall', name: 'HALL', address: 'Peetri tn 6' },
+        { id: 'kumu', name: 'KUMU', address: 'Weizenbergi 34' },
+        { id: 'd3', name: 'D3', address: 'Telliskivi 62/2' },
+        { id: 'ekkm', name: 'EKKM', address: 'Kursi tn 5' },
+        { id: 'uuslaine', name: 'Uus Laine', address: 'Vana-Kalamaja tn 1' },
+        { id: 'fonoteek', name: 'FONOTEEK', address: 'Telliskivi tn 62' },
+      ];
+
+      const state = {
+        activeId: venues[0].id,
+        pins: Object.fromEntries(venues.map((v) => [v.id, null])),
+        mapSrc: '/assets/tallinmapupdated.png',
+        uploadName: '',
+        uploadObjectUrl: null,
+      };
+
+      const els = {
+        list: document.getElementById('venue-list'),
+        stage: document.getElementById('stage'),
+        map: document.getElementById('map-image'),
+        mapSelect: document.getElementById('map-select'),
+        mapUpload: document.getElementById('map-upload'),
+        clearUpload: document.getElementById('clear-upload'),
+        uploadOption: document.getElementById('upload-option'),
+        uploadName: document.getElementById('upload-name'),
+        export: document.getElementById('export'),
+        status: document.getElementById('status'),
+        hint: document.getElementById('hint'),
+        cursor: document.getElementById('cursor-readout'),
+        clearActive: document.getElementById('clear-active'),
+        clearAll: document.getElementById('clear-all'),
+        copyJson: document.getElementById('copy-json'),
+        copySeeds: document.getElementById('copy-seeds'),
+      };
+
+      function isUploadSrc(src) {
+        return Boolean(src) && (src.startsWith('blob:') || src.startsWith('data:'));
+      }
+
+      function revokeUpload() {
+        if (state.uploadObjectUrl) {
+          URL.revokeObjectURL(state.uploadObjectUrl);
+          state.uploadObjectUrl = null;
+        }
+      }
+
+      function syncStageAspect() {
+        const naturalW = els.map.naturalWidth || STAGE_W;
+        const naturalH = els.map.naturalHeight || STAGE_H;
+        els.stage.style.setProperty('--stage-w', String(naturalW));
+        els.stage.style.setProperty('--stage-h', String(naturalH));
+      }
+
+      function clamp01(n) {
+        return Math.min(1, Math.max(0, n));
+      }
+
+      function toStage(nx, ny) {
+        return {
+          x: Math.round(nx * STAGE_W),
+          y: Math.round(ny * STAGE_H),
+        };
+      }
+
+      function eventToNorm(event) {
+        const rect = els.stage.getBoundingClientRect();
+        return {
+          nx: clamp01((event.clientX - rect.left) / rect.width),
+          ny: clamp01((event.clientY - rect.top) / rect.height),
+        };
+      }
+
+      function activeVenue() {
+        return venues.find((v) => v.id === state.activeId);
+      }
+
+      function placedCount() {
+        return venues.filter((v) => state.pins[v.id]).length;
+      }
+
+      function load() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (parsed.pins) {
+            for (const venue of venues) {
+              const pin = parsed.pins[venue.id];
+              if (pin && Number.isFinite(pin.nx) && Number.isFinite(pin.ny)) {
+                state.pins[venue.id] = { nx: clamp01(pin.nx), ny: clamp01(pin.ny) };
+              }
+            }
+          }
+          if (parsed.activeId && venues.some((v) => v.id === parsed.activeId)) {
+            state.activeId = parsed.activeId;
+          }
+          if (parsed.mapSrc && !isUploadSrc(parsed.mapSrc)) {
+            state.mapSrc = parsed.mapSrc;
+          }
+        } catch {
+          /* ignore corrupt storage */
+        }
+      }
+
+      function save() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          mapSrc: isUploadSrc(state.mapSrc) ? '/assets/tallinmapupdated.png' : state.mapSrc,
+          activeId: state.activeId,
+          pins: state.pins,
+          hadUpload: isUploadSrc(state.mapSrc),
+          uploadName: state.uploadName || '',
+        }));
+      }
+
+      function renderList() {
+        els.list.innerHTML = venues.map((venue) => {
+          const placed = Boolean(state.pins[venue.id]);
+          const stage = placed ? toStage(state.pins[venue.id].nx, state.pins[venue.id].ny) : null;
+          const coords = stage ? `${stage.x}, ${stage.y}` : 'not placed';
+          return `<li><button type="button" data-venue-id="${venue.id}" aria-pressed="${venue.id === state.activeId}" class="${placed ? 'is-placed' : ''}"><strong>${venue.name}</strong><span>${venue.address}</span><span>${coords}</span></button></li>`;
+        }).join('');
+      }
+
+      function renderPins() {
+        els.stage.querySelectorAll('.pin').forEach((node) => node.remove());
+        for (const venue of venues) {
+          const pin = state.pins[venue.id];
+          if (!pin) continue;
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'pin';
+          button.dataset.venueId = venue.id;
+          button.setAttribute('aria-label', `${venue.name} pin`);
+          button.setAttribute('aria-current', String(venue.id === state.activeId));
+          button.style.left = `${pin.nx * 100}%`;
+          button.style.top = `${pin.ny * 100}%`;
+          button.innerHTML = `<span class="pin-label">${venue.name}</span>`;
+          button.addEventListener('pointerdown', onPinPointerDown);
+          els.stage.appendChild(button);
+        }
+      }
+
+      function exportPayload() {
+        return {
+          mapSrc: isUploadSrc(state.mapSrc) ? `upload:${state.uploadName || 'custom'}` : state.mapSrc,
+          stage: { width: STAGE_W, height: STAGE_H },
+          image: {
+            naturalWidth: els.map.naturalWidth || null,
+            naturalHeight: els.map.naturalHeight || null,
+          },
+          venues: venues.map((venue) => {
+            const pin = state.pins[venue.id];
+            if (!pin) {
+              return { id: venue.id, name: venue.name, address: venue.address, x: null, y: null, nx: null, ny: null };
+            }
+            const stage = toStage(pin.nx, pin.ny);
+            return {
+              id: venue.id,
+              name: venue.name,
+              address: venue.address,
+              x: stage.x,
+              y: stage.y,
+              nx: Number(pin.nx.toFixed(5)),
+              ny: Number(pin.ny.toFixed(5)),
+            };
+          }),
+        };
+      }
+
+      function seedSnippet() {
+        return venues.map((venue) => {
+          const pin = state.pins[venue.id];
+          const stage = pin ? toStage(pin.nx, pin.ny) : { x: 0, y: 0 };
+          return `  ['${venue.id}', '${venue.name}', '${venue.address}', ${stage.x}, ${stage.y}, ...]`;
+        }).join('\n');
+      }
+
+      function refreshExport() {
+        els.export.value = JSON.stringify(exportPayload(), null, 2);
+        const venue = activeVenue();
+        els.hint.textContent = `${venue.name}: click map to place/move · ${placedCount()}/${venues.length} placed`;
+      }
+
+      function renderMapChrome() {
+        const uploaded = isUploadSrc(state.mapSrc);
+        els.uploadOption.hidden = !uploaded;
+        els.clearUpload.hidden = !uploaded;
+        els.uploadName.textContent = uploaded
+          ? `Using upload: ${state.uploadName || 'custom image'}`
+          : '';
+        if (uploaded) {
+          els.mapSelect.value = '__upload__';
+        } else if ([...els.mapSelect.options].some((opt) => opt.value === state.mapSrc)) {
+          els.mapSelect.value = state.mapSrc;
+        }
+      }
+
+      function render() {
+        renderMapChrome();
+        if (els.map.getAttribute('src') !== state.mapSrc) {
+          els.map.src = state.mapSrc;
+        } else {
+          syncStageAspect();
+        }
+        renderList();
+        renderPins();
+        refreshExport();
+        save();
+      }
+
+      function setActive(id) {
+        state.activeId = id;
+        render();
+      }
+
+      function placeActiveAt(nx, ny) {
+        state.pins[state.activeId] = { nx, ny };
+        render();
+      }
+
+      function onStageClick(event) {
+        if (event.target.closest('.pin')) return;
+        const { nx, ny } = eventToNorm(event);
+        placeActiveAt(nx, ny);
+      }
+
+      function onStageMove(event) {
+        const { nx, ny } = eventToNorm(event);
+        const stage = toStage(nx, ny);
+        els.cursor.textContent = `x: ${stage.x}  y: ${stage.y}  ·  ${(nx * 100).toFixed(1)}%, ${(ny * 100).toFixed(1)}%`;
+      }
+
+      let dragId = null;
+
+      function onPinPointerDown(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const id = event.currentTarget.dataset.venueId;
+        setActive(id);
+        dragId = id;
+        event.currentTarget.setPointerCapture(event.pointerId);
+      }
+
+      function onStagePointerMove(event) {
+        onStageMove(event);
+        if (!dragId) return;
+        const { nx, ny } = eventToNorm(event);
+        state.pins[dragId] = { nx, ny };
+        renderPins();
+        refreshExport();
+        save();
+      }
+
+      function onStagePointerUp() {
+        if (!dragId) return;
+        dragId = null;
+        render();
+      }
+
+      async function copyText(text, okMessage) {
+        try {
+          await navigator.clipboard.writeText(text);
+          els.status.textContent = okMessage;
+        } catch {
+          els.export.focus();
+          els.export.select();
+          els.status.textContent = 'Clipboard blocked - select/copy from the export box.';
+        }
+      }
+
+      function useUploadedFile(file) {
+        if (!file || !file.type.startsWith('image/')) {
+          els.status.textContent = 'Please choose an image file.';
+          return;
+        }
+        revokeUpload();
+        const objectUrl = URL.createObjectURL(file);
+        state.uploadObjectUrl = objectUrl;
+        state.uploadName = file.name;
+        state.mapSrc = objectUrl;
+        els.status.textContent = `Loaded ${file.name}. Drop pins on the white squares.`;
+        render();
+      }
+
+      els.list.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-venue-id]');
+        if (!button) return;
+        setActive(button.dataset.venueId);
+      });
+
+      els.mapSelect.addEventListener('change', () => {
+        if (els.mapSelect.value === '__upload__') return;
+        revokeUpload();
+        state.uploadName = '';
+        state.mapSrc = els.mapSelect.value;
+        els.status.textContent = '';
+        render();
+      });
+
+      els.mapUpload.addEventListener('change', () => {
+        useUploadedFile(els.mapUpload.files?.[0]);
+        els.mapUpload.value = '';
+      });
+
+      els.clearUpload.addEventListener('click', () => {
+        revokeUpload();
+        state.uploadName = '';
+        state.mapSrc = '/assets/tallinmapupdated.png';
+        els.status.textContent = 'Upload cleared.';
+        render();
+      });
+
+      els.map.addEventListener('load', () => {
+        syncStageAspect();
+        renderPins();
+        refreshExport();
+      });
+
+      els.stage.addEventListener('click', onStageClick);
+      els.stage.addEventListener('pointermove', onStagePointerMove);
+      els.stage.addEventListener('pointerup', onStagePointerUp);
+      els.stage.addEventListener('pointercancel', onStagePointerUp);
+
+      els.clearActive.addEventListener('click', () => {
+        state.pins[state.activeId] = null;
+        render();
+      });
+
+      els.clearAll.addEventListener('click', () => {
+        for (const venue of venues) state.pins[venue.id] = null;
+        render();
+      });
+
+      els.copyJson.addEventListener('click', () => {
+        copyText(JSON.stringify(exportPayload(), null, 2), 'JSON copied.');
+      });
+
+      els.copySeeds.addEventListener('click', () => {
+        copyText(seedSnippet(), 'venueSeeds snippet copied.');
+      });
+
+      load();
+      render();
+    </script>
+  </body>
+</html>

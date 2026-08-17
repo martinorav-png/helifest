@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A preview page for the animated HELI logo.">
+  <title>HELI - Logo animation preview</title>
+  <style>
+    :root {
+      --paper: #f7f7f5;
+      --ink: #11110f;
+      --muted: #777771;
+      --rule: #d7d7d1;
+      --accent: #e4002b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .page {
+      width: min(1440px, 100%);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 28px clamp(20px, 4vw, 64px) 36px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 34px;
+    }
+
+    .topbar, .footer, .controls, .details { border-top: 1px solid var(--rule); }
+
+    .topbar {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding-top: 12px;
+      gap: 20px;
+    }
+
+    .wordmark { font-size: 14px; font-weight: 700; letter-spacing: .16em; }
+    .eyebrow, .meta, .footer { color: var(--muted); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(230px, 300px);
+      align-items: center;
+      gap: clamp(34px, 8vw, 120px);
+    }
+
+    .stage {
+      min-height: min(62vw, 670px);
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--rule);
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stage::before, .stage::after {
+      content: "";
+      position: absolute;
+      background: var(--rule);
+    }
+    .stage::before { width: 1px; height: 100%; left: 50%; top: 0; opacity: .45; }
+    .stage::after { height: 1px; width: 100%; left: 0; top: 50%; opacity: .45; }
+
+    .logo-wrap { width: min(560px, 72%); aspect-ratio: 944 / 796; position: relative; z-index: 1; }
+    svg { width: 100%; height: 100%; display: block; }
+
+    .side-panel { align-self: center; }
+    h1 { margin: 10px 0 18px; max-width: 7ch; font-size: clamp(42px, 5vw, 74px); line-height: .9; letter-spacing: -.07em; }
+    .intro { max-width: 260px; margin: 0 0 30px; color: #55554f; font-size: 14px; line-height: 1.5; }
+
+    .controls { padding-top: 16px; display: grid; gap: 16px; }
+    .control-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    button, select {
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      background: transparent;
+      color: var(--ink);
+      min-height: 38px;
+      padding: 0 13px;
+      font: inherit;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    button:hover, button:focus-visible, select:focus-visible { background: var(--ink); color: #fff; outline: none; }
+    button.primary { background: var(--ink); color: #fff; }
+    button.primary:hover, button.primary:focus-visible { background: var(--accent); border-color: var(--accent); }
+    label { display: grid; gap: 7px; color: var(--muted); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+
+    .details { margin-top: 24px; padding-top: 16px; display: grid; gap: 13px; }
+    .detail { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
+    .detail span:first-child { color: var(--muted); }
+    .status { color: var(--accent); font-weight: 700; }
+
+    .footer { padding-top: 12px; display: flex; justify-content: space-between; gap: 12px; }
+
+    @keyframes h-breathe {
+      0%, 12% { d: path("M15 177H501V0H516V368H501V191H15V368H0V0H15V177Z"); animation-timing-function: linear; }
+      35%, 75% { d: path("M184 121H332V0H516V368H332V247H184V368H0V0H184V121Z"); animation-timing-function: linear; }
+      88%, 100% { d: path("M15 177H501V0H516V368H501V191H15V368H0V0H15V177Z"); }
+    }
+    @keyframes e-breathe {
+      0%, 12% { d: path("M944 15H591V177H944V191H591V353H944V368H576V0H944V15Z"); animation-timing-function: linear; }
+      35%, 75% { d: path("M944 126H760V142H944V226H760V242H944V368H576V0H944V126Z"); animation-timing-function: linear; }
+      88%, 100% { d: path("M944 15H591V177H944V191H591V353H944V368H576V0H944V15Z"); }
+    }
+    @keyframes l-breathe {
+      0%, 12% { d: path("M15 781H516V796H0V428H15V781Z"); animation-timing-function: linear; }
+      35%, 75% { d: path("M184 670H516V796H0V428H184V670Z"); animation-timing-function: linear; }
+      88%, 100% { d: path("M15 781H516V796H0V428H15V781Z"); }
+    }
+    @keyframes i-breathe {
+      0%, 12% { d: path("M590 796H576V570H590V796ZM590 554H576V428H590V554Z"); animation-timing-function: linear; }
+      35%, 75% { d: path("M944 796H576V570H944V796ZM944 554H576V428H944V554Z"); animation-timing-function: linear; }
+      88%, 100% { d: path("M590 796H576V570H590V796ZM590 554H576V428H590V554Z"); }
+    }
+    #Union { animation: i-breathe 3.5s linear infinite; }
+    #Union_2 { animation: h-breathe 3.5s linear infinite; }
+    #Union_3 { animation: l-breathe 3.5s linear infinite; }
+    #Union_4 { animation: e-breathe 3.5s linear infinite; }
+    .is-paused #Union, .is-paused #Union_2, .is-paused #Union_3, .is-paused #Union_4 { animation-play-state: paused; }
+
+    @media (prefers-reduced-motion: reduce) {
+      #Union, #Union_2, #Union_3, #Union_4 { animation-play-state: paused; }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding-top: 20px; gap: 24px; }
+      main { grid-template-columns: 1fr; gap: 30px; }
+      .stage { min-height: 74vw; }
+      .side-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+      .side-panel h1, .side-panel .intro { grid-column: 1 / -1; }
+      .details { margin-top: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page" id="page">
+    <header class="topbar">
+      <div class="wordmark">HELI</div>
+      <div class="eyebrow">Logo animation / preview</div>
+    </header>
+
+    <main>
+      <section class="stage" aria-label="Animated HELI logo preview">
+        <div class="logo-wrap">
+          <svg width="944" height="796" viewBox="0 0 944 796" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="HELI animated logo">
+            <path id="Union" d="M944 796H576V570H944V796ZM944 554H576V428H944V554Z" fill="black"/>
+            <path id="Union_2" d="M184 121H332V0H516V368H332V247H184V368H0V0H184V121Z" fill="black"/>
+            <path id="Union_3" d="M184 670H516V796H0V428H184V670Z" fill="black"/>
+            <path id="Union_4" d="M944 126H760V142H944V226H760V242H944V368H576V0H944V126Z" fill="black"/>
+          </svg>
+        </div>
+      </section>
+
+      <aside class="side-panel">
+        <div class="eyebrow">01 - Motion study</div>
+        <h1>Letters in motion.</h1>
+        <p class="intro">The mark breathes between a thin structural form and its bold original weight.</p>
+
+        <section class="controls" aria-label="Animation controls">
+          <div class="control-row">
+            <button class="primary" id="playPause" type="button">Pause</button>
+            <button id="restart" type="button">Restart</button>
+          </div>
+          <label for="speed">Playback speed
+            <select id="speed">
+              <option value="7">0.5× - slow</option>
+              <option value="3.5" selected>1× - normal</option>
+              <option value="1.75">2× - fast</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="details" aria-label="Animation details">
+          <div class="detail"><span>Status</span><span class="status" id="status">Playing</span></div>
+          <div class="detail"><span>Cycle</span><span id="cycle">3.5 seconds</span></div>
+          <div class="detail"><span>Format</span><span>Inline SVG</span></div>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <span>Direct browser preview</span>
+      <span>2026</span>
+    </footer>
+  </div>
+
+  <script>
+    const page = document.getElementById('page');
+    const playPause = document.getElementById('playPause');
+    const restart = document.getElementById('restart');
+    const speed = document.getElementById('speed');
+    const status = document.getElementById('status');
+    const cycle = document.getElementById('cycle');
+    const animatedPaths = document.querySelectorAll('[id^="Union"]');
+
+    function setPlaying(playing) {
+      page.classList.toggle('is-paused', !playing);
+      playPause.textContent = playing ? 'Pause' : 'Play';
+      status.textContent = playing ? 'Playing' : 'Paused';
+    }
+
+    playPause.addEventListener('click', () => {
+      setPlaying(page.classList.contains('is-paused'));
+    });
+
+    restart.addEventListener('click', () => {
+      animatedPaths.forEach((path) => {
+        path.style.animation = 'none';
+        path.offsetHeight;
+        path.style.animation = '';
+      });
+      setPlaying(true);
+    });
+
+    speed.addEventListener('change', () => {
+      const duration = Number(speed.value);
+      animatedPaths.forEach((path) => { path.style.animationDuration = `${duration}s`; });
+      cycle.textContent = `${duration} seconds`;
+    });
+  </script>
+</body>
+</html>

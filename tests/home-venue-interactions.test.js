@@ -125,6 +125,31 @@ test('bindPaperVenueMap ignores the selected marker and cleanup cancels pending 
   });
 });
 
+test('bindPaperVenueMap remounts the venue pixel island after a switch', () => {
+  const mounts = [];
+  const root = createMapRoot();
+  root.panel.querySelector = (selector) => (selector === '[data-venue-pixel-root]' ? { id: 'pixel-host' } : null);
+
+  withFakeTiming((clock) => {
+    const cleanup = bindPaperVenueMap(root, {
+      mountVenuePixel: (element, venue) => {
+        mounts.push({ element, venueId: venue.id });
+        return () => {};
+      },
+    });
+
+    assert.equal(mounts.length, 1);
+    assert.equal(mounts[0].venueId, 'paavli');
+
+    root.markers[1].click();
+    clock.advance(150);
+
+    assert.equal(mounts.at(-1).venueId, 'ida');
+    assert.match(root.panel.innerHTML, /data-venue-pixel-root/);
+    cleanup();
+  });
+});
+
 test('bindPaperVenueMap returns a no-op cleanup when the panel is absent', () => {
   assert.doesNotThrow(() => bindPaperVenueMap({ querySelector: () => null, querySelectorAll: () => [new FakeMarker('paavli')] })());
 });

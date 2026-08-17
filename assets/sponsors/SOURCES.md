@@ -1,32 +1,32 @@
 # Sponsor asset sources
 
+Clean vector logos exported from the HELI Figma file
+(`https://www.figma.com/design/zoHlZKWOifF0d8ofef4YPs/HELI-festival?node-id=57-240`,
+FHD LANDSCAPE frame `57:241`).
+
 | Sponsor | File | Source | Notes |
 | --- | --- | --- | --- |
-| Paavli Kultuurivabrik | paavli-kultuurivabrik.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. The official `kultuurivabrik.ee` contact page linked a Google Drive logo folder, but the folder was blocked by sign-in. |
-| IDA | ida.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. The official `idaidaida.ee` site has a styled header but no downloadable logo asset. |
-| HALL | hall.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. The official `hall.vision` site did not expose a usable downloadable logo. |
-| Kumu | kumu.png | Paper artwork crop: assets/heli-sponsors.png | Exact KUMU mark crop with transparent bounds and no trailing separator. The researched official-attributed `kumu.svg` is retained as a reference but is not used in the loop because its 312:22 lockup is too wide at the required fixed height. |
-| D3 | d3.png | https://www.d-3.ee/ | Official asset from D3's official website; retain the supplied brand presentation. |
-| MOD | mod.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. No authoritative downloadable asset was verified. |
-| EKKM | ekkm.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. The official `ekkm.ee` site uses an inline SVG but offers no downloadable brand asset matching the required lockup. |
-| Hungr | hungr.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. No authoritative downloadable asset was verified. |
-| Uus Laine | uus-laine.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. The official `uuslaine.com` site did not expose a usable downloadable logo. |
-| Ülase 12 | ulase-12.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. Research found listing pages only, not an authoritative downloadable logo. |
-| FONOTEEK | fonoteek.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. The official `fonoteek.ee` site did not provide an accessible downloadable asset. |
-| TOPS | tops.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. `kohviktops.ee` provided a reference, but no current authoritative logo download was verified. |
-| Plastik | plastik.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. No authoritative downloadable asset was verified. |
-| Kureeritud Uudised Records | kureeritud-uudised-records.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. No authoritative downloadable asset was verified. |
-| Von Krahl | von-krahl.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. The official `vonkrahl.ee` site did not provide a downloadable logo asset. |
-| EKA | eka.png | https://www.artun.ee/en/academy/about/logos-and-symbolics/ | Official logo resource; follow the academy's logo-use guidance. |
-| Biit Me | biit-me.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. `biit.me` exposed candidate assets, but the exact Paper lockup could not be verified. |
-| Kino Sõprus | kino-soprus.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. The official site exposes an SVG, but the exact Paper lockup could not be verified. |
-| XINH | xinh.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. No authoritative downloadable asset was verified. |
-| Pudel | pudel.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. `pudel.ee` exposed a candidate asset, but its authority and exact lockup were unconfirmed. |
-| Stuudio | stuudio.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. `clubstudio.ee` exposed a candidate asset, but its authority and exact lockup were unconfirmed. |
-| Burger Box | burger-box.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. An official Facebook presence was found, but it provided no downloadable logo asset. |
-| Terminal | terminal.png | Paper artwork crop: assets/heli-sponsors.png | Exact crop. Official sites and candidate PNGs were found, but none was confirmed as the exact authoritative lockup. |
-| Tallinn | tallinn.png | https://www.tallinn.ee/et/ettevotjale/tallinna-logo | Official city logo resource; follow Tallinn's published logo-use guidance. |
-
-## Retained research reference
-
-`kumu.svg` came from https://commons.wikimedia.org/wiki/File:Kumu_Art_Museum.svg and remains in this directory for provenance. It is not referenced by the manifest.
+| Paavli Kultuurivabrik | paavli-kultuurivabrik.svg | Figma node `57:364` | Clean vector export from FHD LANDSCAPE. |
+| IDA | ida.svg | Figma node `57:351` | Combined logo group export; Figma placeholder backgrounds removed. |
+| HALL | hall.svg | Figma node `57:372` | Clean vector export. |
+| Kumu | kumu.svg | Figma node `57:374` | Crest + wordmark lockup from the poster. |
+| D3 | d3.svg | Figma node `57:346` | Clean vector export. |
+| MOD | mod.svg | Figma node `57:317` | Clean vector export. |
+| EKKM | ekkm.svg | Figma node `57:308` | Clean vector export. |
+| Hungr | hungr.svg | Figma node `57:324` | Clean vector export. |
+| Uus Laine | uus-laine.svg | Figma node `57:329` | Combined logo group export; Figma placeholder backgrounds removed. |
+| Ülase 12 | ulase-12.svg | Figma node `57:283` | Clean vector export. |
+| FONOTEEK | fonoteek.svg | Figma node `57:268` | Combined logo group export; Figma placeholder backgrounds removed. |
+| TOPS | tops.svg | Figma node `57:390` | Clean vector export. |
+| Plastik | plastik.svg | Figma node `57:417` | Clean vector export. |
+| Kureeritud Uudised Records | kureeritud-uudised-records.svg | Figma node `57:446` | Clean vector export (poster label: Kurvad Uudised Records). |
+| Von Krahl | von-krahl.svg | Figma node `57:488` | Clean vector export. |
+| EKA | eka.svg | Figma node `57:538` | Academy wordmark from the poster Sponsors row (`Tekstid. Valge`). |
+| Biit Me | biit-me.svg | Figma node `57:511` | Clean vector export. |
+| Kino Sõprus | kino-soprus.svg | Figma node `57:408` | Clean vector export. |
+| XINH | xinh.svg | Figma node `57:425` | Clean vector export (poster label: Xinhai 1911). |
+| Pudel | pudel.svg | Figma node `57:439` | Clean vector export. |
+| Stuudio | stuudio.svg | Figma node `57:451` | Combined logo group export; Figma placeholder backgrounds removed. |
+| Burger Box | burger-box.svg | Figma node `57:502` | Clean vector export. |
+| Terminal | terminal.svg | Figma node `57:520` | Clean vector export. |
+| Tallinn | tallinn.svg | Figma node `57:548` | City coat of arms from the poster Sponsors row. |

@@ -1,6 +1,6 @@
 export const translations = {
   ee: {
-    pageTitle: 'HELI - Tallinna klubiskeene showcase festival',
+    pageTitle: 'HELI FEST',
     nav: { programme: 'Programm', venues: 'Paigad', artists: 'Artistid', transport: 'Transport', info: 'Info' },
     language: { label: 'Vali keel', ee: 'EE', en: 'EN' },
     common: { placeholder: 'Näidis', programmePlaceholder: 'Programmi näidis', backToProgramme: 'Tagasi programmi juurde', clearFilters: 'Tühjenda filtrid', date: 'Kuupäev', venue: 'Toimumispaik', format: 'Vorming', all: 'Kõik' },
@@ -16,7 +16,7 @@ export const translations = {
     notFound: { label: 'Marsruuti ei leitud', title: 'Vali teine<br>peatus.', action: 'Ava programm' },
   },
   en: {
-    pageTitle: 'HELI - Tallinn club scene showcase festival',
+    pageTitle: 'HELI FEST',
     nav: { programme: 'Programme', venues: 'Venues', artists: 'Artists', transport: 'Transport', info: 'Info' },
     language: { label: 'Choose language', ee: 'EE', en: 'EN' },
     common: { placeholder: 'Placeholder', programmePlaceholder: 'Programme placeholder', backToProgramme: 'Back to programme', clearFilters: 'Clear filters', date: 'Date', venue: 'Venue', format: 'Format', all: 'All' },
