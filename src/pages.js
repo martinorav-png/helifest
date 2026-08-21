@@ -13,7 +13,7 @@ export function renderRoute(route) {
     case 'programme':
       return {
         active: 'programme',
-        tone: 'light',
+        tone: 'dark',
         content: renderProgrammeView({
           date: query.date,
           venueId: query.venue,
@@ -23,19 +23,19 @@ export function renderRoute(route) {
     case 'venues':
       return { active: 'venues', tone: 'dark', content: renderVenuesView(query.venue) };
     case 'venue':
-      return { active: 'venues', tone: 'light', content: renderVenueDetailView(route.id, query) };
+      return { active: 'venues', tone: 'dark', content: renderVenueDetailView(route.id, query) };
     case 'artist':
-      return { active: 'programme', tone: 'light', content: renderArtistDetailView(route.id, query) };
+      return { active: 'programme', tone: 'dark', content: renderArtistDetailView(route.id, query) };
     case 'tickets':
       return { active: 'tickets', tone: 'dark', content: renderTicketsView() };
     case 'transport':
-      return { active: 'transport', tone: 'light', content: renderTransportView() };
+      return { active: 'transport', tone: 'dark', content: renderTransportView() };
     case 'about':
-      return { active: 'about', tone: 'light', content: renderAboutView() };
+      return { active: 'about', tone: 'dark', content: renderAboutView() };
     default:
       return {
         active: 'home',
-        tone: 'light',
+        tone: 'dark',
         content: '<section class="utility-page not-found-view"><p>404</p><h1 id="page-title">SEDA LEHTE EI OLE.</h1><a class="outline-action" href="#home">TAGASI AVALEHELE</a></section>',
       };
   }

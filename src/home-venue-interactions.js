@@ -8,7 +8,7 @@ const panelInnerMarkup = (record) => {
 
 export function bindPaperVenueMap(root, { mountVenuePixel = () => () => {} } = {}) {
   const panel = root.querySelector('[data-paper-venue-panel]');
-  const markers = [...root.querySelectorAll('.paper-map-marker[data-venue-id]')];
+  const markers = [...root.querySelectorAll('.paper-map-marker[data-venue-id], .paper-map-chip[data-venue-id]')];
   if (!panel || !markers.length) return () => {};
 
   let timeoutId;
@@ -31,7 +31,7 @@ export function bindPaperVenueMap(root, { mountVenuePixel = () => () => {} } = {
   const listeners = markers.map((marker) => {
     const listener = () => {
       if (marker.getAttribute('aria-pressed') === 'true') return;
-      panel.classList.add('paper-venue-panel--switching');
+      panel.setAttribute('data-open', 'false');
       clearTimeout(timeoutId);
       cancelFrame(frameId);
       timeoutId = setTimeout(() => {
@@ -39,10 +39,10 @@ export function bindPaperVenueMap(root, { mountVenuePixel = () => () => {} } = {
         cleanupVenuePixel();
         cleanupVenuePixel = () => {};
         panel.innerHTML = panelInnerMarkup(venue);
-        markers.forEach((item) => item.setAttribute('aria-pressed', String(item === marker)));
+        markers.forEach((item) => item.setAttribute('aria-pressed', String(item.dataset.venueId === marker.dataset.venueId)));
         syncVenuePixel(venue);
-        frameId = requestFrame(() => panel.classList.remove('paper-venue-panel--switching'));
-      }, 150);
+        frameId = requestFrame(() => panel.setAttribute('data-open', 'true'));
+      }, 220);
     };
     marker.addEventListener('click', listener);
     return [marker, listener];

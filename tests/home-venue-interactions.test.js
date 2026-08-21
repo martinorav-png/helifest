@@ -20,16 +20,20 @@ class FakePanel {
   constructor() {
     const classes = new Set();
     this.classList = { add: (name) => classes.add(name), remove: (name) => classes.delete(name), has: (name) => classes.has(name) };
+    this.attributes = { 'data-open': 'true' };
     this.innerHTML = 'initial panel';
   }
+  setAttribute(name, value) { this.attributes[name] = String(value); }
+  getAttribute(name) { return this.attributes[name]; }
 }
 
-function createMapRoot({ panel = new FakePanel(), markers = [new FakeMarker('paavli', true), new FakeMarker('ida')] } = {}) {
+function createMapRoot({ panel = new FakePanel(), markers = [new FakeMarker('paavli', true), new FakeMarker('ida')], chips = [] } = {}) {
   return {
     panel,
     markers,
+    chips,
     querySelector(selector) { return selector === '[data-paper-venue-panel]' ? panel : null; },
-    querySelectorAll(selector) { return selector === '.paper-map-marker[data-venue-id]' ? markers : []; },
+    querySelectorAll(selector) { return selector.includes('.paper-map-marker[data-venue-id]') ? [...markers, ...chips] : []; },
   };
 }
 
@@ -79,14 +83,14 @@ function withFakeTiming(run) {
   try { run(clock); } finally { Object.assign(globalThis, original); }
 }
 
-test('bindPaperVenueMap switches only at 150ms and removes the switching class on the next animation frame', () => {
+test('bindPaperVenueMap switches after the close transition and reopens on the next animation frame', () => {
   const root = createMapRoot();
   const panel = root.panel;
   withFakeTiming((clock) => {
     const cleanup = bindPaperVenueMap(root);
     root.markers[1].click();
-    assert.equal(panel.classList.has('paper-venue-panel--switching'), true);
-    clock.advance(149);
+    assert.equal(panel.getAttribute('data-open'), 'false');
+    clock.advance(219);
     assert.equal(panel.innerHTML, 'initial panel');
     assert.equal(root.markers[0].getAttribute('aria-pressed'), 'true');
     clock.advance(1);
@@ -94,9 +98,9 @@ test('bindPaperVenueMap switches only at 150ms and removes the switching class o
     assert.match(panel.innerHTML, /IDA/);
     assert.equal(root.markers[0].getAttribute('aria-pressed'), 'false');
     assert.equal(root.markers[1].getAttribute('aria-pressed'), 'true');
-    assert.equal(panel.classList.has('paper-venue-panel--switching'), true);
+    assert.equal(panel.getAttribute('data-open'), 'false');
     clock.runFrames();
-    assert.equal(panel.classList.has('paper-venue-panel--switching'), false);
+    assert.equal(panel.getAttribute('data-open'), 'true');
     cleanup();
   });
 });
@@ -106,22 +110,22 @@ test('bindPaperVenueMap ignores the selected marker and cleanup cancels pending 
   withFakeTiming((clock) => {
     const cleanup = bindPaperVenueMap(root);
     root.markers[0].click();
-    assert.equal(root.panel.classList.has('paper-venue-panel--switching'), false);
+    assert.equal(root.panel.getAttribute('data-open'), 'true');
     root.markers[1].click();
     cleanup();
-    clock.advance(150);
+    clock.advance(220);
     assert.equal(root.panel.innerHTML, 'initial panel');
     assert.equal(root.markers[1].listeners.has('click'), false);
 
     const secondRoot = createMapRoot();
     const secondCleanup = bindPaperVenueMap(secondRoot);
     secondRoot.markers[1].click();
-    clock.advance(150);
+    clock.advance(220);
     assert.equal(clock.pendingFrames, 1);
     secondCleanup();
     assert.equal(clock.cancelledFrames, 1);
     clock.runFrames();
-    assert.equal(secondRoot.panel.classList.has('paper-venue-panel--switching'), true);
+    assert.equal(secondRoot.panel.getAttribute('data-open'), 'false');
   });
 });
 
@@ -142,10 +146,28 @@ test('bindPaperVenueMap remounts the venue pixel island after a switch', () => {
     assert.equal(mounts[0].venueId, 'paavli');
 
     root.markers[1].click();
-    clock.advance(150);
+    clock.advance(220);
 
     assert.equal(mounts.at(-1).venueId, 'ida');
     assert.match(root.panel.innerHTML, /data-venue-pixel-root/);
+    cleanup();
+  });
+});
+
+test('map pins and mobile chips keep the same venue selected', () => {
+  const markers = [new FakeMarker('paavli', true), new FakeMarker('ida')];
+  const chips = [new FakeMarker('paavli', true), new FakeMarker('ida')];
+  const root = createMapRoot({ markers, chips });
+
+  withFakeTiming((clock) => {
+    const cleanup = bindPaperVenueMap(root);
+    chips[1].click();
+    clock.advance(220);
+
+    assert.equal(markers[0].getAttribute('aria-pressed'), 'false');
+    assert.equal(chips[0].getAttribute('aria-pressed'), 'false');
+    assert.equal(markers[1].getAttribute('aria-pressed'), 'true');
+    assert.equal(chips[1].getAttribute('aria-pressed'), 'true');
     cleanup();
   });
 });

@@ -141,6 +141,7 @@ export const LogoLoop = memo(
     const [seqHeight, setSeqHeight] = useState(0);
     const [copyCount, setCopyCount] = useState(ANIMATION_CONFIG.MIN_COPIES);
     const [isHovered, setIsHovered] = useState(false);
+    const [isFocusWithin, setIsFocusWithin] = useState(false);
 
     const effectiveHoverSpeed = useMemo(() => {
       if (hoverSpeed !== undefined) return hoverSpeed;
@@ -192,7 +193,7 @@ export const LogoLoop = memo(
 
     useImageLoader(seqRef, updateDimensions, [logos, gap, logoHeight, isVertical]);
 
-    useAnimationLoop(trackRef, targetVelocity, seqWidth, seqHeight, isHovered, effectiveHoverSpeed, isVertical);
+    useAnimationLoop(trackRef, targetVelocity, seqWidth, seqHeight, isHovered || isFocusWithin, effectiveHoverSpeed, isVertical);
 
     const cssVariables = useMemo(
       () => ({
@@ -223,9 +224,17 @@ export const LogoLoop = memo(
     const handleMouseLeave = useCallback(() => {
       if (effectiveHoverSpeed !== undefined) setIsHovered(false);
     }, [effectiveHoverSpeed]);
+    const handleFocusCapture = useCallback(() => {
+      if (effectiveHoverSpeed !== undefined) setIsFocusWithin(true);
+    }, [effectiveHoverSpeed]);
+    const handleBlurCapture = useCallback((event) => {
+      if (effectiveHoverSpeed !== undefined && !event.currentTarget.contains(event.relatedTarget)) {
+        setIsFocusWithin(false);
+      }
+    }, [effectiveHoverSpeed]);
 
     const renderLogoItem = useCallback(
-      (item, key) => {
+      (item, key, isDuplicate) => {
         if (renderItem) {
           return (
             <li className="logoloop__item" key={key} role="listitem">
@@ -247,6 +256,7 @@ export const LogoLoop = memo(
             height={item.height}
             alt={item.alt ?? ''}
             title={item.title}
+            style={{ '--logoloop-optical-scale': item.opticalScale ?? 1 }}
             loading="lazy"
             decoding="async"
             draggable={false}
@@ -260,6 +270,7 @@ export const LogoLoop = memo(
             aria-label={itemAriaLabel || 'logo link'}
             target="_blank"
             rel="noreferrer noopener"
+            tabIndex={isDuplicate ? -1 : undefined}
           >
             {content}
           </a>
@@ -285,7 +296,7 @@ export const LogoLoop = memo(
             aria-hidden={copyIndex > 0}
             ref={copyIndex === 0 ? seqRef : undefined}
           >
-            {logos.map((item, itemIndex) => renderLogoItem(item, `${copyIndex}-${itemIndex}`))}
+            {logos.map((item, itemIndex) => renderLogoItem(item, `${copyIndex}-${itemIndex}`, copyIndex > 0))}
           </ul>
         )),
       [copyCount, logos, renderLogoItem]
@@ -306,7 +317,14 @@ export const LogoLoop = memo(
 
     return (
       <div ref={containerRef} className={rootClassName} style={containerStyle} role="region" aria-label={ariaLabel}>
-        <div className="logoloop__track" ref={trackRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div
+          className="logoloop__track"
+          ref={trackRef}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onFocusCapture={handleFocusCapture}
+          onBlurCapture={handleBlurCapture}
+        >
           {logoLists}
         </div>
       </div>
@@ -317,4 +335,3 @@ export const LogoLoop = memo(
 LogoLoop.displayName = 'LogoLoop';
 
 export default LogoLoop;
-

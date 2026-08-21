@@ -1,25 +1,33 @@
 import { renderPaperHomepage } from './home.js';
 import { bindPaperVenueMap } from './home-venue-interactions.js';
+import { bindOpenCallMorph } from './open-call-morph.js';
+import { bindKaepaelStroke } from './kaepael-stroke.js';
 import { mountSponsorLoop } from './sponsor-loop.jsx';
 import { mountVenuePixel } from './venue-pixel.jsx';
 import { getPaperVenue } from './home-venues.js';
 import { parseRoute } from './router.js';
 import { renderRoute } from './pages.js';
-import { renderSiteShell } from './site-shell.js';
+import { renderSiteShell, revealRoutePanel } from './site-shell.js';
 import { bindUtilityInteractions } from './utility-interactions.js';
 
 const main = document.querySelector('#main-content');
 let cleanupPaperVenueMap = () => {};
+let cleanupOpenCallMorph = () => {};
+let cleanupKaepaelStroke = () => {};
 let cleanupSponsorLoop = () => {};
 let cleanupUtilityInteractions = () => {};
 let cleanupVenueDetailPixel = () => {};
 
 function clearMountedFeatures() {
   cleanupPaperVenueMap();
+  cleanupOpenCallMorph();
+  cleanupKaepaelStroke();
   cleanupSponsorLoop();
   cleanupUtilityInteractions();
   cleanupVenueDetailPixel();
   cleanupPaperVenueMap = () => {};
+  cleanupOpenCallMorph = () => {};
+  cleanupKaepaelStroke = () => {};
   cleanupSponsorLoop = () => {};
   cleanupUtilityInteractions = () => {};
   cleanupVenueDetailPixel = () => {};
@@ -38,7 +46,11 @@ function render() {
       sponsorsLabel: 'HELI venues and partners',
     });
     cleanupPaperVenueMap = bindPaperVenueMap(main, { mountVenuePixel });
+    cleanupOpenCallMorph = bindOpenCallMorph(main);
+    cleanupKaepaelStroke = bindKaepaelStroke(main);
     cleanupSponsorLoop = mountSponsorLoop(main.querySelector('[data-sponsor-loop-root]'));
+    cleanupUtilityInteractions = bindUtilityInteractions(main);
+    revealRoutePanel(main);
     return;
   }
 
@@ -48,6 +60,7 @@ function render() {
   main.innerHTML = renderSiteShell(page);
   cleanupUtilityInteractions = bindUtilityInteractions(main);
   cleanupSponsorLoop = mountSponsorLoop(main.querySelector('[data-sponsor-loop-root]'));
+  revealRoutePanel(main);
 
   const venuePixel = main.querySelector('[data-venue-pixel-root]');
   if (venuePixel && route.name === 'venue') {

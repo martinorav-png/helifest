@@ -10,12 +10,12 @@ export function mountSponsorLoop(element) {
   root.render(
     <LogoLoop
       logos={sponsorLogos}
-      speed={62}
+      speed={32}
       direction="left"
       width="100%"
-      logoHeight={54}
-      gap={34}
-      pauseOnHover={false}
+      logoHeight={48}
+      gap={48}
+      pauseOnHover
       fadeOut={false}
       scaleOnHover
       ariaLabel="HELI venues and partners"

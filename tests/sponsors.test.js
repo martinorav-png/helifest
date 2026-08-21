@@ -21,12 +21,12 @@ const expectedNames = [
   'FONOTEEK',
   'TOPS',
   'Plastik',
-  'Kureeritud Uudised Records',
+  'Kurvad Uudised Records',
   'Von Krahl',
   'EKA',
   'Biit Me',
   'Kino Sõprus',
-  'XINH',
+  'Xinhai 1911',
   'Pudel',
   'Stuudio',
   'Burger Box',
@@ -47,6 +47,10 @@ test('each sponsor item has accessible labels and a unique library path', () => 
     assert.ok(item.alt.trim());
     assert.ok(item.title.trim());
     assert.equal(item.title, item.alt);
+    assert.match(item.href, /^https:\/\//);
+    assert.equal(new URL(item.href).protocol, 'https:');
+    assert.equal(typeof item.opticalScale, 'number');
+    assert.ok(item.opticalScale >= 0.7 && item.opticalScale <= 1.3, `${item.alt} optical scale`);
   }
 
   assert.equal(new Set(paths).size, sponsorLogos.length);
@@ -85,6 +89,25 @@ test('fixed-height loop assets avoid extreme intrinsic aspect ratios', () => {
   }
 });
 
+test('the official EKA lockup is mirrored into both sponsor asset trees', () => {
+  const source = readFileSync(path.join(projectRoot, 'assets', 'sponsors', 'eka.svg'), 'utf8');
+  const publicCopy = readFileSync(path.join(projectRoot, 'public', 'assets', 'sponsors', 'eka.svg'), 'utf8');
+
+  assert.equal(publicCopy, source);
+  assert.match(source, /viewBox="0 0 116\.85 40\.6"/);
+  assert.match(source, /<title>EKA_LOGO_black<\/title>/);
+});
+
+test('the combined Tallinn crest and wordmark is mirrored into both sponsor asset trees', () => {
+  const source = readFileSync(path.join(projectRoot, 'assets', 'sponsors', 'tallinn.svg'), 'utf8');
+  const publicCopy = readFileSync(path.join(projectRoot, 'public', 'assets', 'sponsors', 'tallinn.svg'), 'utf8');
+
+  assert.equal(publicCopy, source);
+  assert.match(source, /viewBox="0 0 68\.7938 16\.6972"/);
+  assert.match(source, /<title>Tallinn<\/title>/);
+  assert.match(source, /<g transform="translate\(17\.7879 2\.0871\)">/);
+});
+
 test('the sponsor loop island uses the exact React LogoLoop integration contract', () => {
   const islandSource = readFileSync(path.join(projectRoot, 'src', 'sponsor-loop.jsx'), 'utf8');
   const componentSource = readFileSync(path.join(projectRoot, 'src', 'components', 'LogoLoop.jsx'), 'utf8');
@@ -94,11 +117,11 @@ test('the sponsor loop island uses the exact React LogoLoop integration contract
   assert.match(islandSource, /import LogoLoop from '\.\/components\/LogoLoop\.jsx';/);
   assert.match(islandSource, /import \{ sponsorLogos \} from '\.\/sponsors\.js';/);
   assert.match(islandSource, /export function mountSponsorLoop\(element\)/);
-  assert.match(islandSource, /speed=\{62\}/);
+  assert.match(islandSource, /speed=\{32\}/);
   assert.match(islandSource, /direction="left"/);
-  assert.match(islandSource, /logoHeight=\{54\}/);
-  assert.match(islandSource, /gap=\{34\}/);
-  assert.match(islandSource, /pauseOnHover=\{false\}/);
+  assert.match(islandSource, /logoHeight=\{48\}/);
+  assert.match(islandSource, /gap=\{48\}/);
+  assert.match(islandSource, /pauseOnHover/);
   assert.match(islandSource, /fadeOut=\{false\}/);
   assert.match(islandSource, /scaleOnHover/);
   assert.match(islandSource, /ariaLabel="HELI venues and partners"/);
@@ -108,16 +131,19 @@ test('the sponsor loop island uses the exact React LogoLoop integration contract
   assert.match(componentSource, /ResizeObserver/);
   assert.match(componentSource, /copyCount/);
   assert.match(componentSource, /requestAnimationFrame/);
+  assert.match(componentSource, /tabIndex=\{isDuplicate \? -1 : undefined\}/);
+  assert.match(componentSource, /--logoloop-optical-scale/);
+  assert.match(componentSource, /onFocusCapture=\{handleFocusCapture\}/);
   assert.match(packageJson.dependencies.react, /19\./);
   assert.match(packageJson.dependencies['react-dom'], /19\./);
 });
 
-test('the 34px sponsor gap remains a protected visual gutter during logo hover scaling', () => {
+test('the 48px sponsor gap remains a protected visual gutter during logo hover scaling', () => {
   const islandSource = readFileSync(path.join(projectRoot, 'src', 'sponsor-loop.jsx'), 'utf8');
   const componentCss = readFileSync(path.join(projectRoot, 'src', 'components', 'LogoLoop.css'), 'utf8');
   const homepageCss = readFileSync(path.join(projectRoot, 'src', 'styles.css'), 'utf8');
 
-  assert.match(islandSource, /gap=\{34\}/);
+  assert.match(islandSource, /gap=\{48\}/);
   assert.match(componentCss, /\.logoloop__item\s*\{[^}]*margin-right:\s*var\(--logoloop-gap\);/s);
   assert.match(homepageCss, /\.paper-sponsor-loop \.logoloop__item\s*\{[^}]*max-width:\s*calc\(var\(--logoloop-logoHeight\) \* 5\);[^}]*position:\s*relative;[^}]*isolation:\s*isolate;/s);
   assert.match(homepageCss, /\.paper-sponsor-loop \.logoloop__item img\s*\{[^}]*max-width:\s*100%;/s);

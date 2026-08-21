@@ -1,8 +1,9 @@
 # Sponsor asset sources
 
-Clean vector logos exported from the HELI Figma file
+Most clean vector logos were exported from the HELI Figma file
 (`https://www.figma.com/design/zoHlZKWOifF0d8ofef4YPs/HELI-festival?node-id=57-240`,
-FHD LANDSCAPE frame `57:241`).
+FHD LANDSCAPE frame `57:241`). The EKA and Tallinn rows record later official
+lockups supplied directly by Lorentz.
 
 | Sponsor | File | Source | Notes |
 | --- | --- | --- | --- |
@@ -21,7 +22,7 @@ FHD LANDSCAPE frame `57:241`).
 | Plastik | plastik.svg | Figma node `57:417` | Clean vector export. |
 | Kureeritud Uudised Records | kureeritud-uudised-records.svg | Figma node `57:446` | Clean vector export (poster label: Kurvad Uudised Records). |
 | Von Krahl | von-krahl.svg | Figma node `57:488` | Clean vector export. |
-| EKA | eka.svg | Figma node `57:538` | Academy wordmark from the poster Sponsors row (`Tekstid. Valge`). |
+| EKA | eka.svg | Lorentz-provided official `EKA_must.svg` | Exact official black EKA lockup. |
 | Biit Me | biit-me.svg | Figma node `57:511` | Clean vector export. |
 | Kino Sõprus | kino-soprus.svg | Figma node `57:408` | Clean vector export. |
 | XINH | xinh.svg | Figma node `57:425` | Clean vector export (poster label: Xinhai 1911). |
@@ -29,4 +30,4 @@ FHD LANDSCAPE frame `57:241`).
 | Stuudio | stuudio.svg | Figma node `57:451` | Combined logo group export; Figma placeholder backgrounds removed. |
 | Burger Box | burger-box.svg | Figma node `57:502` | Clean vector export. |
 | Terminal | terminal.svg | Figma node `57:520` | Clean vector export. |
-| Tallinn | tallinn.svg | Figma node `57:548` | City coat of arms from the poster Sponsors row. |
+| Tallinn | tallinn.svg | Lorentz-provided combined black Tallinn SVG | Combined city crest and Tallinn wordmark lockup. |

@@ -29,7 +29,7 @@ export const festivalData = {
   shuttleRoute: {
     access: 'Festival pass required',
     description: 'The festival shuttle runs between participating venues on both nights. Departure times will be announced closer to the festival.',
-    stops: ['Paavli', 'Telliskivi', 'Kalamaja', 'City centre', 'Kadriorg', 'Noblessner'],
+    stops: ['Paavli', 'Telliskivi', 'Kalamaja', 'Kesklinn', 'Kadriorg', 'Noblessner'],
   },
 };
 

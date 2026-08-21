@@ -5,6 +5,7 @@ import {
   getPaperVenue,
   renderPaperVenuePanel,
   renderPaperVenueMarkers,
+  renderPaperVenueSelector,
 } from '../src/home-venues.js';
 
 test('paper venue records retain the specified venues, placeholders, and map positions', () => {
@@ -12,8 +13,17 @@ test('paper venue records retain the specified venues, placeholders, and map pos
   assert.equal(paperVenueRecords.filter((venue) => venue.isPlaceholder).length, 3);
   assert.deepEqual(
     paperVenueRecords.map(({ x, y }) => [x, y]),
-    [[74, 210], [232, 376], [221, 143], [628, 476], [249, 368], [354, 273], [275, 353], [225, 416], [500, 251], [398, 300], [323, 270]],
+    [[74, 210], [232, 376], [221, 143], [541, 250], [249, 368], [354, 273], [275, 353], [225, 416], [500, 251], [398, 300], [323, 270]],
   );
+});
+
+test('mobile venue selector exposes one 44px-capable control per mapped venue', () => {
+  const markup = renderPaperVenueSelector('hall');
+
+  assert.equal((markup.match(/class="paper-map-chip"/g) || []).length, 8);
+  assert.match(markup, /data-venue-id="hall"[^>]*aria-pressed="true"/);
+  assert.match(markup, />Paavli Kultuurivabrik<\/button>/);
+  assert.doesNotMatch(markup, /Tulevane paik/);
 });
 
 test('photographed venue panels expose three distinct gallery frames and a PixelTransition mount root', () => {
@@ -89,6 +99,7 @@ test('markers mark HALL as active and expose their positional contract', () => {
   assert.doesNotMatch(markup, /data-venue-id="future-0[1-3]"/);
   assert.match(markup, /data-venue-id="hall"[^>]*aria-pressed="true"[^>]*style="--marker-x: 221; --marker-y: 143;"/);
   assert.equal((markup.match(/aria-pressed="true"/g) || []).length, 1);
+  assert.equal((markup.match(/<span class="paper-map-marker__pixel" aria-hidden="true"><\/span>/g) || []).length, 8);
 });
 
 test('venue panels include researched site bios under the address', () => {
@@ -117,6 +128,7 @@ test('a placeholder panel announces that its location will be added', () => {
   const markup = renderPaperVenuePanel(getPaperVenue('future-01'));
 
   assert.match(markup, /data-paper-venue-panel/);
+  assert.match(markup, /class="paper-venue-content t-panel-slide"[^>]*data-open="true"/);
   assert.match(markup, /data-paper-venue-title/);
   assert.match(markup, /data-paper-venue-copy/);
   assert.match(markup, /data-paper-venue-visual/);

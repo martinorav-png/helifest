@@ -128,7 +128,7 @@ const venueSeeds = [
   ['paavli', 'Paavli Kultuurivabrik', 'Paavli tn 7', 'Endisesse kalatööstushoonesse rajatud kontsert- ja klubisaal Põhja-Tallinnas. Avatud 2023; Liveurope’i liige kureeritud live- ja klubiprogrammiga.', 74, 210, false, 'https://kultuurivabrik.ee', '@kultuurivabrik'],
   ['ida', 'IDA', 'Telliskivi tn 60a-5', 'Sõltumatu kogukonnaraadio Telliskivi Loomelinnakus. Stuudio ja baar, kus live-saated, DJ-sessioonid ja peod kohtuvad.', 232, 376, false, 'https://idaidaida.net', '@ida.radio'],
   ['hall', 'HALL', 'Peetri tn 6', 'Noblessneri endises tööstushoones tegutsev techno-klubi (alates 2017). Ida-Euroopa undergroundi lava; suvel ka Suvila aed.', 221, 143, false, 'https://hall.vision', '@halltallinn'],
-  ['kumu', 'KUMU', 'Weizenbergi 34, Valge 1', 'Eesti Kunstimuuseumi peakorter Kadriorus - üks Põhja-Euroopa suuremaid kunstimuuseume. Näituste kõrval auditoorium kontsertideks ja üritusteks.', 628, 476, false, 'https://kumu.ekm.ee', '@kumukunstimuuseum'],
+  ['kumu', 'KUMU', 'Weizenbergi 34, Valge 1', 'Eesti Kunstimuuseumi peakorter Kadriorus - üks Põhja-Euroopa suuremaid kunstimuuseume. Näituste kõrval auditoorium kontsertideks ja üritusteks.', 541, 250, false, 'https://kumu.ekm.ee', '@kumukunstimuuseum'],
   ['d3', 'D3', 'Telliskivi 62-2, Depoo 3', 'Telliskivi Depoos asuv kontsert- ja klubisaal (2021). Tööstuslik ruum tugeva heliga nädalavahetuse pidudeks ja live’ideks.', 249, 368, false, 'https://d-3.ee', '@d3_tallinn'],
   ['ekkm', 'EKKM', 'Kursi tn 5', 'Artistide algatatud Eesti Kaasaegse Kunsti Muuseum endises katlamaja hoones. Eksperimentaalne näitusruum, mis küsib, milline võiks muuseum olla.', 354, 273, false, 'https://ekkm.ee', '@ekkmtallinn'],
   ['uuslaine', 'Uus Laine', 'Vana-Kalamaja tn 1', 'Kalamaja Art Deco baar ja kogukonnapaik. Live, DJ-õhtud, viktoriinid ja kohtumised - avatud plaaniga koht.', 275, 353, false, 'https://uuslaine.com', '@laine.bar'],
@@ -168,7 +168,7 @@ export function getPaperVenue(id) {
 export function renderPaperVenuePanel(record) {
   const venue = record || getPaperVenue();
 
-  return `<div class="paper-venue-content" data-paper-venue-panel aria-live="polite"><div class="paper-venue-copy"><h2 id="paper-venue-title" data-paper-venue-title>${venue.name}</h2><p data-paper-venue-copy><span class="paper-venue-address">${venue.address}</span><br><span class="paper-venue-bio">${venue.description}</span></p></div><div class="paper-venue-photo" data-paper-venue-visual><div data-venue-pixel-root></div></div></div>`;
+  return `<div class="paper-venue-content t-panel-slide" data-paper-venue-panel data-open="true" aria-live="polite"><div class="paper-venue-copy"><h2 id="paper-venue-title" data-paper-venue-title>${venue.name}</h2><p data-paper-venue-copy><span class="paper-venue-address">${venue.address}</span><br><span class="paper-venue-bio">${venue.description}</span></p></div><div class="paper-venue-photo" data-paper-venue-visual><div data-venue-pixel-root></div></div></div>`;
 }
 
 export function renderPaperVenueMarkers(activeId = 'paavli') {
@@ -176,7 +176,16 @@ export function renderPaperVenueMarkers(activeId = 'paavli') {
 
   return paperVenueRecords
     .filter((venue) => !venue.isPlaceholder)
-    .map((venue) => `<button type="button" class="paper-map-marker" data-venue-id="${venue.id}" aria-label="${venue.name}, ${venue.address}" aria-pressed="${venue.id === activeVenue.id}" style="--marker-x: ${venue.x}; --marker-y: ${venue.y};"></button>`)
+    .map((venue) => `<button type="button" class="paper-map-marker" data-venue-id="${venue.id}" aria-label="${venue.name}, ${venue.address}" aria-pressed="${venue.id === activeVenue.id}" style="--marker-x: ${venue.x}; --marker-y: ${venue.y};"><span class="paper-map-marker__pixel" aria-hidden="true"></span></button>`)
+    .join('');
+}
+
+export function renderPaperVenueSelector(activeId = 'paavli') {
+  const activeVenue = getPaperVenue(activeId);
+
+  return paperVenueRecords
+    .filter((venue) => !venue.isPlaceholder)
+    .map((venue) => `<button type="button" class="paper-map-chip" data-venue-id="${venue.id}" aria-pressed="${venue.id === activeVenue.id}">${venue.name}</button>`)
     .join('');
 }
 

@@ -1,40 +1,40 @@
 export const siteCopy = {
-  dates: 'Lorem ipsum dolor',
-  descriptor: 'Lorem ipsum dolor sit amet',
-  programmeIntro: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.',
-  venueIntro: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur.',
-  aboutLead: 'Lorem ipsum dolor sit amet.',
-  aboutBody: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
-  pending: 'Lorem ipsum.',
-  story: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna.',
+  dates: '16–17 oktoober 2026',
+  descriptor: 'Kaheks õhtuks avatud Tallinna sõltumatud klubid ühe pileti all.',
+  programmeIntro: 'Esinejate nimekiri ja ajakava on veel avaldamisel. Need read näitavad, kuidas programm toimib.',
+  venueIntro: 'Kaheks osalevat paika ühendab festivalibuss. Iga koht lisab oma tutvustuse enne festivali.',
+  aboutLead: 'HELI on kaks õhtut muusikat Tallinna sõltumatutes klubides.',
+  aboutBody: 'Kahepäevane Tallinna klubiskeene showcase, mis toob kohad, artistid ja publiku ühe programmi alla.',
+  pending: 'Info lisandub peagi.',
+  story: 'HELI toob Tallinna klubid kaheks õhtuks kokku. Vali set, hüppa bussi peale ja vaata, kuhu õhtu viib.',
 };
 
 export const ticketFacts = {
   price: '15 EUR',
   nights: 2,
-  access: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.',
-  transport: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  collection: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis consectetur purus.',
-  purchase: 'Lorem ipsum dolor sit amet.',
+  access: 'Üks pilet osalevatesse kohtadesse ja festivalitransporti mõlemal õhtul.',
+  transport: 'Festivali buss on festivalipileti omanikele.',
+  collection: 'Eelmüügist ostetud pileti saab kätte koha või bussi ukselt.',
+  purchase: 'Ostulink lisandub. Praegu piletit osta ei saa.',
 };
 
 export const transportFacts = {
-  access: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  service: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.',
-  departures: 'Lorem ipsum dolor sit amet.',
-  note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla non metus auctor fringilla.',
+  access: 'Sõiduks on vaja festivalipiletit.',
+  service: 'Festivali buss sõidab mõlemal õhtul osalevate kohtade vahel.',
+  departures: 'Väljumisajad avaldatakse enne festivali.',
+  note: 'Peatused: Paavli, Telliskivi, Kalamaja, Kesklinn, Kadriorg, Noblessner.',
 };
 
 export const faqItems = [
-  { id: 'pass', question: 'Lorem ipsum dolor sit amet?', answer: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis.' },
-  { id: 'wristband', question: 'Consectetur adipiscing elit?', answer: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.' },
-  { id: 'bus', question: 'Ut enim ad minim veniam?', answer: 'Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.' },
-  { id: 'age', question: 'Duis aute irure dolor in reprehenderit?', answer: 'In voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat.' },
-  { id: 'accessibility', question: 'Excepteur sint occaecat cupidatat?', answer: 'Sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet.' },
+  { id: 'pass', question: 'Mis pileti sisse kuulub?', answer: 'Üks 15-eurone pilet kehtib osalevates paikades ja festivalibussis 16.–17. oktoobril.' },
+  { id: 'wristband', question: 'Kuidas pileti kätte saan?', answer: 'Eelmüügist ostetud pileti saab kätte koha või bussi ukselt. Ostulink lisandub.' },
+  { id: 'bus', question: 'Kas buss on pileti sees?', answer: 'Jah. Festivalibuss on festivalipileti omanikele. Väljumisajad avaldatakse enne festivali.' },
+  { id: 'age', question: 'Kas on vanusepiirang?', answer: 'Iga koha reeglid avaldatakse koos täisprogrammiga.' },
+  { id: 'accessibility', question: 'Kas paigad on ligipääsetavad?', answer: 'Ligipääsetavuse info ilmub iga koha lehel.' },
 ];
 
 export const artistCopy = {
-  name: 'Lorem ipsum dolor',
-  category: 'Lorem ipsum',
-  bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.',
+  name: 'Artist avalikustatakse peagi',
+  category: 'Programmi koht',
+  bio: 'Artisti tutvustus lisandub koos programmi avalikustamisega.',
 };

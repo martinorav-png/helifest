@@ -3,9 +3,9 @@
 :root { --paper: #f7f7f5; --ink: #080808; --muted: #6e6e6a; --rule: #bdbdb8; --display: 'Stack Sans Notch', 'Helvetica Neue', Arial, sans-serif; --body: 'Manrope', Arial, sans-serif; --gutter: clamp(1rem, 2.6vw, 3rem); }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-html { background: #000000; scroll-behavior: smooth; scrollbar-width: none; }
+html { background: #f7f7f5; scroll-behavior: smooth; scrollbar-width: none; }
 html::-webkit-scrollbar { display: none; }
-body { margin: 0; color: var(--ink); background: #000000; font-family: var(--body); font-size: 16px; line-height: 1.25; }
+body { margin: 0; color: var(--ink); background: #f7f7f5; font-family: var(--body); font-size: 16px; line-height: 1.25; }
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .18em; }
 button, select { font: inherit; color: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
@@ -65,37 +65,35 @@ footer { padding: 3rem var(--gutter); display: grid; grid-template-columns: .5fr
 @font-face { font-family: 'Stack Sans Headline'; src: url('/assets/StackSansHeadline-VariableFont_wght.woff2') format('woff2'); font-weight: 200 900; font-display: swap; }
 @font-face { font-family: 'Manrope'; src: url('/assets/Manrope-VariableFont_wght.ttf') format('truetype'); font-weight: 200 800; font-display: swap; }
 
-body.paper-home-active { min-height: 100vh; overflow-x: hidden; background: #000000; scrollbar-width: none; }
-body.paper-home-active::-webkit-scrollbar { display: none; }
-html:has(body.paper-home-active) { scrollbar-width: none; }
-html:has(body.paper-home-active)::-webkit-scrollbar { display: none; }
+body.paper-home-active { min-height: 100vh; overflow-x: hidden; background: #f7f7f5; scrollbar-width: thin; }
 html:has(body.utility-active) { scrollbar-width: none; }
 html:has(body.utility-active)::-webkit-scrollbar { display: none; }
-body.paper-home-active #main-content { width: 100%; overflow: hidden; background: #000000; }
+body.paper-home-active #main-content { width: 100%; overflow: hidden; background: #f7f7f5; }
 .paper-homepage-shell {
-  --paper-home-scale: calc(100vw / 1280px);
   position: relative;
   width: 100%;
-  height: calc(60px + 1406 * (100vw / 1280));
-  overflow: hidden;
-  background: #000000;
+  height: calc(60px + 109.844vw);
+  overflow: clip;
+  background: #f7f7f5;
+  --paper-home-scale: calc(100vw / 1280px);
 }
 .paper-homepage-canvas {
   position: absolute;
   top: 60px;
   left: 50%;
   width: 1280px;
+  max-width: 1280px;
   height: 1406px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  overflow: hidden;
-  border-radius: 16px 16px 0 0;
-  background-color: #000000;
-  background-image: linear-gradient(in oklab 180deg, oklab(97.6% -.0007 0.003) 88%, oklab(100% 0 0 / 0%) 91%);
+  align-items: stretch;
+  overflow: clip;
+  border-radius: 0;
+  margin: 0 0 0 -640px;
+  background-color: #f7f7f5;
+  background-image: none;
   transform: scale(var(--paper-home-scale));
   transform-origin: top center;
-  margin-left: -640px;
   font-synthesis: none;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -149,7 +147,7 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
 .paper-header nav .paper-nav-link:focus-visible::after { transform: scaleX(1); }
 .paper-header nav .paper-nav-link[aria-current='page']::after { transform: scaleX(1); }
 .paper-ticket-ticker {
-  width: 1280px;
+  width: 100%;
   height: 40px;
   flex: 0 0 40px;
   display: flex;
@@ -196,9 +194,10 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
 .paper-ticket-item img { display: block; width: 20px; height: 20px; flex: 0 0 20px; }
 .paper-hero {
   position: relative;
-  width: 1280px;
-  height: 499px;
-  flex: 0 0 499px;
+  width: 100%;
+  height: auto;
+  min-height: 499px;
+  flex: 0 0 auto;
   overflow: hidden;
   background: #f7f7f5;
 }
@@ -360,7 +359,7 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
 }
 .paper-venue {
   position: relative;
-  width: 1280px;
+  width: 100%;
   height: 522px;
   flex: 0 0 522px;
   overflow: hidden;
@@ -462,11 +461,12 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
   image-rendering: pixelated;
 }
 .paper-map-stage {
-  position: absolute;
-  left: 607px;
+  position: relative;
+  left: auto;
   top: 0;
-  width: 673px;
-  height: 522px;
+  width: 100%;
+  height: 100%;
+  min-height: 522px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -476,9 +476,10 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
 }
 .paper-map-frame {
   position: relative;
-  width: 673px;
-  aspect-ratio: 543 / 220;
-  flex: 0 0 auto;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  flex: 1 1 auto;
 }
 .paper-map-tickets {
   width: 144px;
@@ -557,7 +558,7 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
 .paper-venue-panel--switching { opacity: 0; transform: translateY(8px); }
 .paper-sponsors {
   position: relative;
-  width: 1280px;
+  width: 100%;
   height: 165px;
   flex: 0 0 165px;
   display: flex;
@@ -566,7 +567,7 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
   background: #f7f7f5;
 }
 .paper-sponsor-loop {
-  width: 1280px;
+  width: 100%;
   overflow: visible;
   padding: 27px 0;
 }
@@ -585,7 +586,7 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
 }
 .paper-footer {
   position: relative;
-  width: 1280px;
+  width: 100%;
   height: 140px;
   flex: 0 0 140px;
   display: flex;

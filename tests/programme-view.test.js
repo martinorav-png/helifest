@@ -15,13 +15,16 @@ test('programme view renders a dense ruled schedule with entity links', () => {
   assert.match(html, /legend>VORM/);
   assert.match(html, /href="#artist\/artist-01\?from=programme/);
   assert.match(html, /href="#venue\/ida\?from=programme/);
-  assert.match(html, />LOREM</);
+  assert.match(html, /Artist avalikustatakse peagi/);
+  assert.match(html, />Näidis</);
   assert.doesNotMatch(html, /card|rounded|pill/i);
+  assert.doesNotMatch(html, /Lorem ipsum/i);
 });
 
 test('programme view exposes a useful empty state for impossible filters', () => {
   const html = renderProgrammeView({ date: '2026-10-16', venueId: 'kumu', category: 'Listening' });
 
-  assert.match(html, /Lorem ipsum dolor sit amet/);
+  assert.match(html, /Ükski valik ei sobi/);
   assert.match(html, /data-clear-filters/);
+  assert.match(html, /Tühjenda filtrid/);
 });

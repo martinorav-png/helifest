@@ -14,17 +14,27 @@ test('tickets view presents the pass as a physical ticket without inventing chec
   assert.doesNotMatch(html, /stripe|ticketmaster|sold out/i);
 });
 
-test('transport view is a blank placeholder', () => {
+test('transport view lists confirmed stops and labels pending departures', () => {
   const html = renderTransportView();
   assert.match(html, /<h1[^>]+id="page-title"[^>]*>TRANSPORT<\/h1>/);
-  assert.doesNotMatch(html, /transport-map-embed|transport-stop|maps\.google\.com/);
+  assert.match(html, /Väljumisajad avaldatakse enne festivali/);
+  assert.match(html, /festivalipiletit/);
+  assert.match(html, /Paavli/);
+  assert.match(html, /Telliskivi/);
+  assert.match(html, /Kesklinn/);
+  assert.match(html, /Noblessner/);
+  assert.match(html, /class="transport-stop"/);
+  assert.doesNotMatch(html, /transport-map-embed|maps\.google\.com/);
+  assert.doesNotMatch(html, /Lorem ipsum/i);
 });
 
 test('about view uses source concept and honest policy placeholders', () => {
   const html = renderAboutView();
-  assert.match(html, /<h1[^>]+id="page-title"[^>]*>LOREM IPSUM,<br>DOLOR SIT AMET\.<\/h1>/);
-  assert.match(html, /Lorem ipsum/);
+  assert.match(html, /<h1[^>]+id="page-title"[^>]*>Üks linn\.<br>Ühes rütmis\.<\/h1>/);
+  assert.match(html, /klubiskeene showcase/);
   assert.match(html, /<details/);
   assert.match(html, /data-sponsor-loop-root/);
+  assert.match(html, /id="contact"/);
   assert.doesNotMatch(html, /info@|\+372|18\+/i);
+  assert.doesNotMatch(html, /Lorem ipsum/i);
 });

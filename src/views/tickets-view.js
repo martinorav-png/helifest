@@ -24,6 +24,6 @@ export function renderTicketsView() {
         </aside>
       </article>
     </div>
-    <section class="faq-section"><h2>Lorem ipsum dolor sit</h2>${faqItems.slice(0, 3).map((item) => `<details><summary>${item.question}<span aria-hidden="true">+</span></summary><p>${item.answer}</p></details>`).join('')}</section>
+    <section class="faq-section"><h2>Korduma kippuvad küsimused</h2>${faqItems.slice(0, 3).map((item) => `<details><summary>${item.question}<span aria-hidden="true">+</span></summary><p>${item.answer}</p></details>`).join('')}</section>
   </section>`;
 }

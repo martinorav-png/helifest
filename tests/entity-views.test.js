@@ -56,7 +56,9 @@ test('each venue page uses the same layout with that venue’s sheet content', (
 
 test('artist detail uses honest pending content and preserves programme context', () => {
   const html = renderArtistDetailView('artist-01', { from: 'programme', date: '2026-10-16' });
-  assert.match(html, /Lorem ipsum/);
-  assert.match(html, /LOREM IPSUM DOLOR/);
+  assert.match(html, /Artist avalikustatakse peagi/i);
+  assert.match(html, /← AJAKAVA/);
+  assert.match(html, /Avalikustamisel/);
   assert.doesNotMatch(html, /Kode9|Hyperdub|Instagram|Spotify/i);
+  assert.doesNotMatch(html, /Lorem ipsum/i);
 });

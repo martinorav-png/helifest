@@ -37,6 +37,6 @@ export function renderVenueDetailView(id = 'paavli', context = {}) {
       <div><span>INSTAGRAM</span><strong>${factLink(venue.instagramUrl, venue.instagram)}</strong></div>
     </section>
     <section class="entity-story"><p>${venue.description}</p>${websiteAction}</section>
-    <section class="entity-programme"><header><h2>AJAKAVA</h2></header><div class="programme-table">${events.length ? events.map((event) => renderProgrammeRow(event, { date: event.date, venueId: venue.id })).join('') : '<div class="programme-empty"><h2>Lorem ipsum dolor sit amet.</h2><p>Consectetur adipiscing elit.</p></div>'}</div></section>
+    <section class="entity-programme"><header><h2>AJAKAVA</h2></header><div class="programme-table">${events.length ? events.map((event) => renderProgrammeRow(event, { date: event.date, venueId: venue.id })).join('') : '<div class="programme-empty"><h2>Selles paigas ei ole veel avalikustatud setti.</h2><p>Ajakava täieneb koos esinejate nimekirjaga.</p></div>'}</div></section>
   </article>`;
 }
