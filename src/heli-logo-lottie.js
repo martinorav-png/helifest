@@ -18,7 +18,7 @@ function prefersReducedMotion(matchMedia) {
 // forward pass (0-290) forward-then-backward ourselves for a smooth
 // reverse-morph, since the file's own loop would otherwise jump-cut.
 const WORKING_SEGMENT_END = 290;
-const PLAYBACK_SPEED = 0.2;
+const PLAYBACK_SPEED = 0.25;
 const STATIC_FALLBACK_FRAME = 75;
 
 export function bindHeliLogoLottie(root, {
