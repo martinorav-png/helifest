@@ -157,7 +157,6 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
   overflow: hidden;
   border-bottom: 2px solid;
 }
-.paper-ticket-ticker--dark { color: #000000; background: #ffffff; border-bottom-color: #000000; }
 .paper-ticket-ticker--light { color: #000000; background: #ffffff; border-bottom-color: #000000; }
 .paper-ticket-marquee {
   display: flex;
@@ -210,30 +209,6 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
   display: block;
   overflow: visible;
 }
-@keyframes heli-h-breathe {
-  0%, 12% { d: path("M15 177H501V0H516V368H501V191H15V368H0V0H15V177Z"); animation-timing-function: linear; }
-  35%, 75% { d: path("M184 121H332V0H516V368H332V247H184V368H0V0H184V121Z"); animation-timing-function: linear; }
-  88%, 100% { d: path("M15 177H501V0H516V368H501V191H15V368H0V0H15V177Z"); }
-}
-@keyframes heli-e-breathe {
-  0%, 12% { d: path("M944 15H591V177H944V191H591V353H944V368H576V0H944V15Z"); animation-timing-function: linear; }
-  35%, 75% { d: path("M944 126H760V142H944V226H760V242H944V368H576V0H944V126Z"); animation-timing-function: linear; }
-  88%, 100% { d: path("M944 15H591V177H944V191H591V353H944V368H576V0H944V15Z"); }
-}
-@keyframes heli-l-breathe {
-  0%, 12% { d: path("M15 781H516V796H0V428H15V781Z"); animation-timing-function: linear; }
-  35%, 75% { d: path("M184 670H516V796H0V428H184V670Z"); animation-timing-function: linear; }
-  88%, 100% { d: path("M15 781H516V796H0V428H15V781Z"); }
-}
-@keyframes heli-i-breathe {
-  0%, 12% { d: path("M590 796H576V570H590V796ZM590 554H576V428H590V554Z"); animation-timing-function: linear; }
-  35%, 75% { d: path("M944 796H576V570H944V796ZM944 554H576V428H944V554Z"); animation-timing-function: linear; }
-  88%, 100% { d: path("M590 796H576V570H590V796ZM590 554H576V428H590V554Z"); }
-}
-.paper-hero-mark .heli-mark-h { animation: heli-h-breathe 3.5s linear infinite; }
-.paper-hero-mark .heli-mark-e { animation: heli-e-breathe 3.5s linear infinite; }
-.paper-hero-mark .heli-mark-l { animation: heli-l-breathe 3.5s linear infinite; }
-.paper-hero-mark .heli-mark-i { animation: heli-i-breathe 3.5s linear infinite; }
 .paper-hero-title {
   position: absolute;
   left: 300px;
@@ -646,10 +621,6 @@ body.paper-home-active #main-content { width: 100%; overflow: hidden; background
 @media (prefers-reduced-motion: reduce) {
   .paper-homepage-canvas { scroll-behavior: auto; }
   .paper-ticket-marquee { animation: none; }
-  .paper-hero-mark .heli-mark-h,
-  .paper-hero-mark .heli-mark-e,
-  .paper-hero-mark .heli-mark-l,
-  .paper-hero-mark .heli-mark-i { animation: none; }
   .paper-map-marker[aria-pressed="true"]::before { animation: none; }
   .paper-programme-hit,
   .paper-hero-ticket,
@@ -1185,9 +1156,10 @@ body.utility-active a { -webkit-tap-highlight-color: transparent; }
   flex-direction: column;
   min-height: 0;
   margin: 0;
+  overflow-y: auto;
 }
 .transport-stop-row {
-  flex: 1;
+  flex: 0 0 auto;
   min-height: 64px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

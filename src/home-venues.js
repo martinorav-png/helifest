@@ -76,6 +76,12 @@ const venueLogos = {
   ekkm: '/assets/sponsors/ekkm.svg',
   uuslaine: '/assets/sponsors/uus-laine.svg',
   fonoteek: '/assets/sponsors/fonoteek.svg',
+  mod: '/assets/sponsors/mod.svg',
+  tops: '/assets/sponsors/tops.svg',
+  pudel: '/assets/sponsors/pudel.svg',
+  plastik: '/assets/sponsors/plastik.svg',
+  ulase12: '/assets/sponsors/ulase-12.svg',
+  burgerbox: '/assets/sponsors/burger-box.svg',
 };
 
 const paavliPageFrames = [
@@ -122,20 +128,30 @@ function galleryFor(id) {
 }
 
 const venueSeeds = [
-  // Pin positions from pin-dropper on tallinn5.png (stage 673×522).
-  // Addresses, websites and Instagram handles from the HELI 2026 website sheet.
-  // Bios distilled from venue sites / public profiles (Liveurope, hall.vision, d-3.ee, fonoteek.ee, ekkm.ee, TMW, Visit Estonia).
-  ['paavli', 'Paavli Kultuurivabrik', 'Paavli tn 7', 'Endisesse kalatööstushoonesse rajatud kontsert- ja klubisaal Põhja-Tallinnas. Avatud 2023; Liveurope’i liige kureeritud live- ja klubiprogrammiga.', 74, 210, false, 'https://kultuurivabrik.ee', '@kultuurivabrik'],
-  ['ida', 'IDA', 'Telliskivi tn 60a-5', 'Sõltumatu kogukonnaraadio Telliskivi Loomelinnakus. Stuudio ja baar, kus live-saated, DJ-sessioonid ja peod kohtuvad.', 232, 376, false, 'https://idaidaida.net', '@ida.radio'],
-  ['hall', 'HALL', 'Peetri tn 6', 'Noblessneri endises tööstushoones tegutsev techno-klubi (alates 2017). Ida-Euroopa undergroundi lava; suvel ka Suvila aed.', 221, 143, false, 'https://hall.vision', '@halltallinn'],
-  ['kumu', 'KUMU', 'Weizenbergi 34, Valge 1', 'Eesti Kunstimuuseumi peakorter Kadriorus - üks Põhja-Euroopa suuremaid kunstimuuseume. Näituste kõrval auditoorium kontsertideks ja üritusteks.', 541, 250, false, 'https://kumu.ekm.ee', '@kumukunstimuuseum'],
-  ['d3', 'D3', 'Telliskivi 62-2, Depoo 3', 'Telliskivi Depoos asuv kontsert- ja klubisaal (2021). Tööstuslik ruum tugeva heliga nädalavahetuse pidudeks ja live’ideks.', 249, 368, false, 'https://d-3.ee', '@d3_tallinn'],
-  ['ekkm', 'EKKM', 'Kursi tn 5', 'Artistide algatatud Eesti Kaasaegse Kunsti Muuseum endises katlamaja hoones. Eksperimentaalne näitusruum, mis küsib, milline võiks muuseum olla.', 354, 273, false, 'https://ekkm.ee', '@ekkmtallinn'],
-  ['uuslaine', 'Uus Laine', 'Vana-Kalamaja tn 1', 'Kalamaja Art Deco baar ja kogukonnapaik. Live, DJ-õhtud, viktoriinid ja kohtumised - avatud plaaniga koht.', 275, 353, false, 'https://uuslaine.com', '@laine.bar'],
-  ['fonoteek', 'FONOTEEK', 'Telliskivi tn 62', 'Telliskivi helitempel Funktion-One kõlaritega. Mixoloogia ja muusika; live, DJ-setid ja kureeritud programmid.', 225, 416, false, 'https://fonoteek.ee', '@fonoteek'],
-  ['future-01', 'Tulevane paik 01', 'Asukoht lisandub', 'Festivali asukoha info lisandub peagi.', 500, 251, true, '', ''],
-  ['future-02', 'Tulevane paik 02', 'Asukoht lisandub', 'Festivali asukoha info lisandub peagi.', 398, 300, true, '', ''],
-  ['future-03', 'Tulevane paik 03', 'Asukoht lisandub', 'Festivali asukoha info lisandub peagi.', 323, 270, true, '', ''],
+  // Pin positions on the blocky Tallinn map (stage 672×532), hand-placed by
+  // the user with the Venue Pin Placer tool (drag-to-place over the actual
+  // map image) — these supersede any earlier estimated/proportional guesses.
+  // Addresses, websites and Instagram handles from the HELI 2026 website sheet
+  // (MOD and ERA still need a confirmed street address).
+  // Bios distilled from venue sites / public profiles (Liveurope, hall.vision, d-3.ee, fonoteek.ee, ekkm.ee, TMW, Visit Estonia, pudel.ee, plastikrecords.ee).
+  ['paavli', 'Paavli Kultuurivabrik', 'Paavli tn 7', 'Endisesse kalatööstushoonesse rajatud kontsert- ja klubisaal Põhja-Tallinnas. Avatud 2023; Liveurope’i liige kureeritud live- ja klubiprogrammiga.', 192, 224, false, 'https://kultuurivabrik.ee', '@kultuurivabrik'],
+  ['ida', 'IDA', 'Telliskivi tn 60a-5', 'Sõltumatu kogukonnaraadio Telliskivi Loomelinnakus. Stuudio ja baar, kus live-saated, DJ-sessioonid ja peod kohtuvad.', 221, 285, false, 'https://idaidaida.net', '@ida.radio'],
+  ['hall', 'HALL', 'Peetri tn 6', 'Noblessneri endises tööstushoones tegutsev techno-klubi (alates 2017). Ida-Euroopa undergroundi lava; suvel ka Suvila aed.', 272, 208, false, 'https://hall.vision', '@halltallinn'],
+  ['kumu', 'KUMU', 'Weizenbergi 34, Valge 1', 'Eesti Kunstimuuseumi peakorter Kadriorus - üks Põhja-Euroopa suuremaid kunstimuuseume. Näituste kõrval auditoorium kontsertideks ja üritusteks.', 476, 248, false, 'https://kumu.ekm.ee', '@kumukunstimuuseum'],
+  ['d3', 'D3', 'Telliskivi 62-2, Depoo 3', 'Telliskivi Depoos asuv kontsert- ja klubisaal (2021). Tööstuslik ruum tugeva heliga nädalavahetuse pidudeks ja live’ideks.', 263, 283, false, 'https://d-3.ee', '@d3_tallinn'],
+  ['ekkm', 'EKKM', 'Kursi tn 5', 'Artistide algatatud Eesti Kaasaegse Kunsti Muuseum endises katlamaja hoones. Eksperimentaalne näitusruum, mis küsib, milline võiks muuseum olla.', 333, 240, false, 'https://ekkm.ee', '@ekkmtallinn'],
+  ['uuslaine', 'Uus Laine', 'Vana-Kalamaja tn 1', 'Kalamaja Art Deco baar ja kogukonnapaik. Live, DJ-õhtud, viktoriinid ja kohtumised - avatud plaaniga koht.', 284, 258, false, 'https://uuslaine.com', '@laine.bar'],
+  ['fonoteek', 'FONOTEEK', 'Telliskivi tn 62', 'Telliskivi helitempel Funktion-One kõlaritega. Mixoloogia ja muusika; live, DJ-setid ja kureeritud programmid.', 243, 272, false, 'https://fonoteek.ee', '@fonoteek'],
+  ['mod', 'MOD', 'Aadress täpsustamisel', 'Tallinna uus klubi-baar-live pind - mitmekülgne stage elektroonilise muusika ja live-esinemiste jaoks.', 183, 230, false, 'https://modclub.ee', '@mod.tln'],
+  ['tops', 'Tops', 'Soo tn 15', 'Kalamaja katusekohvik ja baar - vaated linnale ning vaba õhkkond õhtuti.', 301, 223, false, 'https://kohviktops.ee', '@kohviktops'],
+  ['era', 'ERA', 'Aadress täpsustamisel', 'Täpsem kirjeldus lisandub.', 200, 175, false, '', ''],
+  ['pudel', 'Pudel', 'Telliskivi tn 62', '2013. aastal Telliskivi tehasehoones avatud õllebaar - ainus koht Baltikumis, kus pakutakse Inglise vaadiõlut.', 227, 257, false, 'https://pudel.ee', ''],
+  ['plastik', 'Plastik', 'Pärnu mnt 4', 'Plaadipood ja stuudio kesklinnas - Eesti elektroonilise muusika plaadifirma ja -poe kodu.', 335, 309, false, 'https://plastikrecords.ee', '@plastik.cc'],
+  ['ulase12', 'Ülase 12', 'Ülase tn 12', 'Sotsiaalkeskus ja kontserdipaik Lillekülas - punk- ja DIY-kultuuri kodu.', 226, 356, false, '', '@ylase12'],
+  ['burgerbox', 'Burger Box', 'Kopli tn 4', 'Naabruskonna burgerikoht Kalamaja külje all - lihtne menüü, suur maitse.', 262, 237, false, '', '@burgerboxbox'],
+  ['future-01', 'Tulevane paik 01', 'Asukoht lisandub', 'Festivali asukoha info lisandub peagi.', 434, 266, true, '', ''],
+  ['future-02', 'Tulevane paik 02', 'Asukoht lisandub', 'Festivali asukoha info lisandub peagi.', 238, 238, true, '', ''],
+  ['future-03', 'Tulevane paik 03', 'Asukoht lisandub', 'Festivali asukoha info lisandub peagi.', 378, 238, true, '', ''],
 ];
 
 export const paperVenueRecords = venueSeeds.map(([id, name, address, description, x, y, isPlaceholder, website, instagram]) => {
