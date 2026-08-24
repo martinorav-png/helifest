@@ -17,6 +17,10 @@ function prefersReducedMotion(matchMedia) {
 // zone no longer exists in the data at all. We still play the remaining
 // forward pass (0-290) forward-then-backward ourselves for a smooth
 // reverse-morph, since the file's own loop would otherwise jump-cut.
+// The source keyframes don't start morphing until frame ~48 (nothing before
+// that differs from frame 0, it's a plain hold), so starting the working
+// range later trims the "stay thin" hold without touching the morph itself.
+const WORKING_SEGMENT_START = 20;
 const WORKING_SEGMENT_END = 290;
 const PLAYBACK_SPEED = 0.25;
 const STATIC_FALLBACK_FRAME = 75;
@@ -46,8 +50,12 @@ export function bindHeliLogoLottie(root, {
   // repeated calls idempotent.
   function playNext() {
     if (destroyed) return;
-    const nearEnd = anim.currentFrame > WORKING_SEGMENT_END / 2;
-    anim.playSegments(nearEnd ? [WORKING_SEGMENT_END, 0] : [0, WORKING_SEGMENT_END], true);
+    const midpoint = (WORKING_SEGMENT_START + WORKING_SEGMENT_END) / 2;
+    const nearEnd = anim.currentFrame > midpoint;
+    anim.playSegments(
+      nearEnd ? [WORKING_SEGMENT_END, WORKING_SEGMENT_START] : [WORKING_SEGMENT_START, WORKING_SEGMENT_END],
+      true,
+    );
   }
 
   if (prefersReducedMotion(matchMedia)) {
