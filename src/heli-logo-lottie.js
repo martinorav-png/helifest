@@ -8,10 +8,15 @@ function prefersReducedMotion(matchMedia) {
 }
 
 // The source file's "return to start" pass (layers with sr: -1, a negative
-// time-stretch) isn't rendered by lottie-web, which leaves frames ~290-710
-// blank. The forward pass (frames 0-290) is the only part that actually
-// renders, so we loop that segment forward-then-backward ourselves instead
-// of trusting the file's own out-point/loop.
+// time-stretch) never rendered correctly in lottie-web, leaving frames
+// ~290-710 blank — and under real-world conditions (e.g. the tab sitting
+// backgrounded for a while, which can hand rAF one huge time-delta on
+// refocus) playback could still land in that dead zone despite segment
+// bounds checked in JS. heli-logo-liikuv.json has since been trimmed to
+// drop those layers and truncate the composition to frame 290, so the dead
+// zone no longer exists in the data at all. We still play the remaining
+// forward pass (0-290) forward-then-backward ourselves for a smooth
+// reverse-morph, since the file's own loop would otherwise jump-cut.
 const WORKING_SEGMENT_END = 290;
 const PLAYBACK_SPEED = 0.2;
 const STATIC_FALLBACK_FRAME = 75;
