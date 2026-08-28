@@ -9,7 +9,8 @@ test('programme view renders a dense ruled schedule with entity links', () => {
   assert.match(html, /aria-label="Vali festivali päev"/);
   assert.match(html, /aria-pressed="true"[^>]*>R 16\.10/);
   assert.match(html, /data-filter-panel/);
-  assert.match(html, /class="programme-table"/);
+  assert.match(html, /class="programme-swap"/);
+  assert.match(html, /data-programme-date="2026-10-16"/);
   assert.match(html, /class="programme-row"/);
   assert.match(html, /legend>PAIK/);
   assert.match(html, /legend>VORM/);

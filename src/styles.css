@@ -59,6 +59,7 @@ footer { padding: 3rem var(--gutter); display: grid; grid-template-columns: .5fr
 
 /* Paper finale homepage */
 :root {
+  --duration-stagger: 40ms;
   --duration-fast: 250ms;
   --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
   --acc-expand: 250ms;
@@ -833,7 +834,25 @@ body.utility-active a { -webkit-tap-highlight-color: transparent; }
   font-size: 12px;
   cursor: pointer;
 }
-.programme-results { min-width: 0; }
+.programme-results {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+.programme-results.is-swapping {
+  pointer-events: none;
+}
+.programme-swap.is-incoming {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+.programme-results.is-swapping :is(.programme-day, .programme-row, .programme-empty) {
+  background: var(--heli-ink);
+  will-change: transform;
+}
 .programme-day { min-height: 124px; padding: 25px clamp(20px, 3vw, 44px); display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--heli-rule); }
 .programme-day p { margin: 0; font-size: 11px; }
 .programme-day h2 { margin: 0; font-size: clamp(31px, 4vw, 62px); line-height: .88; }

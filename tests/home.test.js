@@ -78,6 +78,9 @@ test('the application mounts the 24.08 landing and routed utility screens', () =
   assert.match(source, /import \{ bindLandingIntro \} from '\.\/landing-intro\.js'/);
   assert.match(source, /import \{ bindLandingExit, playLandingReturn, prefersReducedMotion \} from '\.\/landing-transition\.js'/);
   assert.match(source, /import \{ playUtilitySwipe, utilitySwipeAxis \} from '\.\/utility-swipe\.js'/);
+  assert.match(source, /import \{ playProgrammeSwap, programmeSwapDirection \} from '\.\/programme-swap\.js'/);
+  assert.match(source, /swapProgrammeInPlace\(/);
+  assert.match(source, /playProgrammeSwap\(results, outgoing, incoming/);
   assert.match(source, /import \{ renderSiteShell, revealRoutePanel, syncUtilityHeader, utilityNavKey, utilitySwipeDirection \} from '\.\/site-shell\.js'/);
   assert.match(source, /import \{ mountSponsorLoop \} from '\.\/sponsor-loop\.jsx'/);
   assert.match(source, /import \{ mountVenuePixel \} from '\.\/venue-pixel\.jsx'/);

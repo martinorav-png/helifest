@@ -11,18 +11,50 @@ function check(value, active) {
   return value === active ? ' checked' : '';
 }
 
-export function renderProgrammeView(state = {}) {
-  const filters = {
+export function programmeFilters(state = {}) {
+  return {
     date: state.date || '2026-10-16',
     venueId: state.venueId || 'All',
     category: state.category || 'All',
   };
+}
+
+export function renderProgrammeSwap(state = {}) {
+  const filters = programmeFilters(state);
   const entries = filterEvents(festivalData.events, filters);
   const dateTitle = dateTitles[filters.date] || dateTitles['2026-10-16'];
+  const listing = entries.length
+    ? entries.map((entry) => renderProgrammeRow(entry, filters)).join('')
+    : `<div class="programme-empty"><h2>Ükski valik ei sobi.</h2><p>Proovi teist kuupäeva või tühjenda filtrid.</p><button type="button" data-clear-filters>Tühjenda filtrid</button></div>`;
+
+  return `<header class="programme-day"><p>${entries.length} näidisrida</p><h2>${dateTitle}</h2></header>${listing}`;
+}
+
+export function syncProgrammeChrome(root, state = {}) {
+  if (!root) return;
+  const filters = programmeFilters(state);
+
+  root.querySelectorAll('[data-date]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.date === filters.date));
+  });
+  root.querySelectorAll('input[name="venue"]').forEach((input) => {
+    input.checked = input.value === filters.venueId;
+  });
+  root.querySelectorAll('input[name="category"]').forEach((input) => {
+    input.checked = input.value === filters.category;
+  });
+
+  root.dataset.programmeDate = filters.date;
+  root.dataset.programmeVenue = filters.venueId;
+  root.dataset.programmeCategory = filters.category;
+}
+
+export function renderProgrammeView(state = {}) {
+  const filters = programmeFilters(state);
   const venues = festivalData.venues.map((venue) => `<label><input type="radio" name="venue" value="${venue.id}"${check(venue.id, filters.venueId)}> ${venue.name}</label>`).join('');
   const categories = Object.entries(categoryLabels).map(([category, label]) => `<label><input type="radio" name="category" value="${category}"${check(category, filters.category)}> ${label}</label>`).join('');
 
-  return `<section class="programme-view utility-page" data-view="programme">
+  return `<section class="programme-view utility-page" data-view="programme" data-programme-date="${filters.date}" data-programme-venue="${filters.venueId}" data-programme-category="${filters.category}">
     <div class="utility-masthead utility-masthead--programme">
       <h1 id="page-title">AJAKAVA</h1>
       <p>${siteCopy.programmeIntro}</p>
@@ -39,8 +71,7 @@ export function renderProgrammeView(state = {}) {
         <button class="text-action" type="button" data-clear-filters>Tühjenda filtrid</button>
       </aside>
       <section class="programme-results" aria-live="polite">
-        <header class="programme-day"><p>${entries.length} näidisrida</p><h2>${dateTitle}</h2></header>
-        <div class="programme-table">${entries.length ? entries.map((entry) => renderProgrammeRow(entry, filters)).join('') : `<div class="programme-empty"><h2>Ükski valik ei sobi.</h2><p>Proovi teist kuupäeva või tühjenda filtrid.</p><button type="button" data-clear-filters>Tühjenda filtrid</button></div>`}</div>
+        <div class="programme-swap">${renderProgrammeSwap(filters)}</div>
       </section>
     </div>
   </section>`;

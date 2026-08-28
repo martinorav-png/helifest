@@ -2,6 +2,8 @@ import { renderPaperHomepage } from './home.js';
 import { bindLandingIntro } from './landing-intro.js';
 import { bindLandingExit, playLandingReturn, prefersReducedMotion } from './landing-transition.js';
 import { playUtilitySwipe, utilitySwipeAxis } from './utility-swipe.js';
+import { playProgrammeSwap, programmeSwapDirection } from './programme-swap.js';
+import { programmeFilters, renderProgrammeSwap, syncProgrammeChrome } from './views/programme-view.js';
 import { mountSponsorLoop } from './sponsor-loop.jsx';
 import { mountVenuePixel } from './venue-pixel.jsx';
 import { getPaperVenue } from './home-venues.js';
@@ -15,6 +17,7 @@ let cleanupLandingIntro = () => {};
 let cleanupLandingExit = () => {};
 let cleanupLandingReturn = () => {};
 let cleanupUtilitySwipe = () => {};
+let cleanupProgrammeSwap = () => {};
 let cleanupSponsorLoop = () => {};
 let cleanupUtilityInteractions = () => {};
 let cleanupVenueDetailPixel = () => {};
@@ -26,6 +29,7 @@ function clearMountedFeatures() {
   cleanupLandingExit();
   cleanupLandingReturn();
   cleanupUtilitySwipe();
+  cleanupProgrammeSwap();
   cleanupSponsorLoop();
   cleanupUtilityInteractions();
   cleanupVenueDetailPixel();
@@ -33,6 +37,7 @@ function clearMountedFeatures() {
   cleanupLandingExit = () => {};
   cleanupLandingReturn = () => {};
   cleanupUtilitySwipe = () => {};
+  cleanupProgrammeSwap = () => {};
   cleanupSponsorLoop = () => {};
   cleanupUtilityInteractions = () => {};
   cleanupVenueDetailPixel = () => {};
@@ -288,6 +293,70 @@ function swipeToUtility(route, direction) {
   return true;
 }
 
+function finishProgrammeSwap(results) {
+  cleanupProgrammeSwap();
+  cleanupProgrammeSwap = () => {};
+  if (!results) return;
+  const panes = [...results.querySelectorAll('.programme-swap')];
+  const keep = panes.at(-1);
+  panes.forEach((pane) => {
+    if (pane !== keep) pane.remove();
+  });
+  keep?.classList.remove('is-incoming');
+  results.classList.remove('is-swapping');
+  results.style.minHeight = '';
+}
+
+function settleProgrammeSwap(incoming) {
+  cleanupProgrammeSwap = () => {};
+  incoming?.classList.remove('is-incoming');
+}
+
+function swapProgrammeInPlace(route) {
+  const view = main.querySelector('[data-view="programme"]');
+  const results = view?.querySelector('.programme-results');
+  if (!view || !results) return false;
+
+  finishProgrammeSwap(results);
+  const outgoing = results.querySelector('.programme-swap');
+  if (!outgoing) return false;
+
+  const nextFilters = programmeFilters({
+    date: route.query?.date,
+    venueId: route.query?.venue,
+    category: route.query?.category,
+  });
+  const fromFilters = programmeFilters({
+    date: view.dataset.programmeDate,
+    venueId: view.dataset.programmeVenue,
+    category: view.dataset.programmeCategory,
+  });
+  const direction = programmeSwapDirection(fromFilters, nextFilters);
+
+  syncProgrammeChrome(view, nextFilters);
+
+  if (!direction) return true;
+
+  const incoming = document.createElement('div');
+  incoming.className = 'programme-swap is-incoming';
+  incoming.innerHTML = renderProgrammeSwap(nextFilters);
+
+  if (prefersReducedMotion()) {
+    outgoing.replaceWith(incoming);
+    settleProgrammeSwap(incoming);
+    return true;
+  }
+
+  cleanupProgrammeSwap = playProgrammeSwap(results, outgoing, incoming, direction, {
+    axis: utilitySwipeAxis(),
+    onSettled() {
+      settleProgrammeSwap(incoming);
+    },
+  });
+
+  return true;
+}
+
 function paintUtility(route, { reveal = true } = {}) {
   document.body.classList.remove('paper-home-active', 'landing-exit-active');
   document.body.classList.add('utility-active');
@@ -335,6 +404,15 @@ function render() {
   ) {
     currentNavKey = nextNavKey;
     if (swipeToUtility(route, direction)) return;
+  }
+
+  if (
+    leavingUtility
+    && route.name === 'programme'
+    && currentNavKey === 'programme'
+    && main.querySelector('[data-view="programme"]')
+  ) {
+    if (swapProgrammeInPlace(route)) return;
   }
 
   clearMountedFeatures();
