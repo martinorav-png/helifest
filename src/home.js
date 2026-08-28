@@ -1,6 +1,4 @@
 import { getPaperVenue, renderPaperVenueMarkers, renderPaperVenuePanel, renderPaperVenueSelector } from './home-venues.js';
-import { renderPaperHeader } from './site-shell.js';
-import { sponsorLogos } from './sponsors.js';
 
 const starAsset = () => '/assets/heli-star-dark.svg';
 
@@ -43,10 +41,26 @@ export function renderPaperFooter() {
   return `<footer class="paper-footer"><a class="paper-footer-wordmark" href="#home" aria-label="HELI avaleht"><img src="/assets/helihorizontal.svg" alt=""></a><p>16–17 oktoober 2026</p><nav aria-label="Footer"><a href="#programme">Ajakava</a><a href="#tickets">Piletid</a><a href="#about">Meist</a></nav></footer>`;
 }
 
+const landingNav = [
+  ['programme', 'Ajakava'],
+  ['venues', 'Paigad'],
+  ['tickets', 'Piletid'],
+  ['transport', 'Transport'],
+  ['about', 'Meist'],
+  ['about', 'Open call'],
+];
+
+const landingMark = heliSquareMark
+  .replace('class="paper-hero-mark"', 'class="landing-mark"')
+  .replace('role="img" aria-label="HELI"', 'aria-hidden="true" focusable="false"');
+
+function renderLandingNav() {
+  return landingNav.map(([route, label]) => (
+    `<a class="landing-nav-link" href="#${route}">${label}</a>`
+  )).join('');
+}
+
 export function renderPaperHomepage(copy = {}) {
-  const marquee = copy.marquee || 'GET YOUR TICKET NOW';
-  const marqueeLabel = copy.marqueeLabel || 'Festival tickets';
   const sponsorsLabel = copy.sponsorsLabel || 'HELI venues and partners';
-  const sponsorNames = copy.sponsorNames || sponsorLogos.map(({ title }) => title);
-  return `<div class="paper-homepage-shell t-panel-slide" data-open="false" aria-busy="true">${renderPaperHeader({ homeLink: true })}<div class="paper-homepage-canvas">${renderPaperMarquee(sponsorNames, sponsorsLabel, 'dark')}${renderPaperMarquee(marquee, marqueeLabel, 'light')}${renderPaperHeroAnimated()}${renderPaperVenue()}${renderPaperSponsors(sponsorsLabel)}${renderPaperFooter()}</div></div>`;
+  return `<div class="landing-shell t-panel-slide" data-open="false" data-intro="pending" aria-busy="true"><div class="landing-canvas"><div class="landing-stage"><div class="landing-lockup"><a class="landing-mark-link" href="#home" aria-label="HELI avaleht">${landingMark}</a><h1 class="landing-title" id="landing-title"><span>Tallinna</span><span>klubiskeene</span><span>showcase</span><span>festival</span></h1><p class="landing-date" aria-label="16.–17. oktoober">16.–17.10</p></div><nav class="landing-nav" aria-label="Primary">${renderLandingNav()}</nav></div></div><section class="landing-sponsors" role="region" aria-label="${sponsorsLabel}"><div class="landing-sponsor-loop" data-sponsor-loop-root></div></section></div>`;
 }

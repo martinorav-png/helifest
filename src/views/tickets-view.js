@@ -23,6 +23,9 @@ export function renderTicketsView() {
           <time datetime="2026-10-16">16 17 10 26</time>
         </aside>
       </article>
+      <figure class="tickets-kaepael">
+        <img src="/assets/KÄEPAEL.png" alt="" width="4000" height="304">
+      </figure>
     </div>
     <section class="faq-section"><h2>Korduma kippuvad küsimused</h2>${faqItems.slice(0, 3).map((item) => `<details><summary>${item.question}<span aria-hidden="true">+</span></summary><p>${item.answer}</p></details>`).join('')}</section>
   </section>`;

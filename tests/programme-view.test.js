@@ -18,6 +18,7 @@ test('programme view renders a dense ruled schedule with entity links', () => {
   assert.match(html, /Artist avalikustatakse peagi/);
   assert.match(html, />Näidis</);
   assert.doesNotMatch(html, /card|rounded|pill/i);
+  assert.doesNotMatch(html, /masthead-mark|HE<br>LI/);
   assert.doesNotMatch(html, /Lorem ipsum/i);
 });
 

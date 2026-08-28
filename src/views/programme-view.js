@@ -26,7 +26,6 @@ export function renderProgrammeView(state = {}) {
     <div class="utility-masthead utility-masthead--programme">
       <h1 id="page-title">AJAKAVA</h1>
       <p>${siteCopy.programmeIntro}</p>
-      <div class="masthead-mark" aria-hidden="true">HE<br>LI</div>
     </div>
     <div class="programme-toolbar">
       <div class="date-switcher" role="group" aria-label="Vali festivali päev">${Object.entries(dateLabels).map(([date, label]) => `<button type="button" data-date="${date}" aria-pressed="${date === filters.date}">${label}</button>`).join('')}</div>

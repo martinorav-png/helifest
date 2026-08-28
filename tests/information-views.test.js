@@ -1,17 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { renderTicketsView } from '../src/views/tickets-view.js';
 import { renderTransportView } from '../src/views/transport-view.js';
 import { renderAboutView } from '../src/views/about-view.js';
 
 test('tickets view presents the pass as a physical ticket without inventing checkout', () => {
   const html = renderTicketsView();
+  const css = readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
+  const corrections = readFileSync(new URL('../src/corrections.css', import.meta.url), 'utf8');
   assert.match(html, /class="pass-ticket"/);
+  assert.match(html, /class="tickets-kaepael"/);
+  assert.match(html, /src="\/assets\/KÄEPAEL\.png"/);
   assert.match(html, /<h1[^>]+id="page-title"[^>]*>15 EUR<\/h1>/);
   assert.match(html, /16–17 oktoober 2026/);
   assert.match(html, /disabled/);
   assert.match(html, /<details/);
   assert.doesNotMatch(html, /stripe|ticketmaster|sold out/i);
+  assert.match(css, /\.tickets-kaepael\s*\{[^}]*background:\s*#ffffff;/s);
+  assert.match(css, /\.tickets-kaepael img\s*\{[^}]*filter:\s*none;/s);
+  assert.doesNotMatch(corrections, /body\.utility-active \.tickets-kaepael img/);
 });
 
 test('transport view lists confirmed stops and labels pending departures', () => {

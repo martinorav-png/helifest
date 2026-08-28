@@ -13,43 +13,29 @@ const copy = {
 
 const baseCssUrl = new URL('../src/styles.css', import.meta.url);
 const correctionsCssUrl = new URL('../src/corrections.css', import.meta.url);
+const landingCssUrl = new URL('../src/landing.css', import.meta.url);
 const readStyles = () => `${readFileSync(baseCssUrl, 'utf8')}\n${existsSync(correctionsCssUrl) ? readFileSync(correctionsCssUrl, 'utf8') : ''}`;
 const readCorrections = () => existsSync(correctionsCssUrl) ? readFileSync(correctionsCssUrl, 'utf8') : '';
+const readLanding = () => existsSync(landingCssUrl) ? readFileSync(landingCssUrl, 'utf8') : '';
 
-test('renderPaperHomepage returns the complete Paper finale composition', () => {
+test('renderPaperHomepage returns the 24.08 landing lockup', () => {
   const markup = renderPaperHomepage(copy);
 
-  assert.match(markup, /^<div class="paper-homepage-shell t-panel-slide" data-open="false" aria-busy="true">/);
-  assert.equal((markup.match(/class="paper-homepage-canvas"/g) || []).length, 1);
-  assert.equal((markup.match(/class="paper-ticket-ticker/g) || []).length, 2);
-  assert.equal((markup.match(/class="paper-ticket-marquee"/g) || []).length, 2);
-  assert.equal((markup.match(/class="paper-ticket-track"/g) || []).length, 4);
-  assert.doesNotMatch(markup, /\/assets\/visitor-hero\.png/);
-  assert.doesNotMatch(markup, /paper-hero-art/);
-  assert.match(markup, /data-venue-pixel-root/);
-  assert.doesNotMatch(markup, /\/assets\/paavli-night\.png/);
+  assert.match(markup, /^<div class="landing-shell t-panel-slide" data-open="false" data-intro="pending" aria-busy="true">/);
+  assert.equal((markup.match(/class="landing-canvas"/g) || []).length, 1);
+  assert.match(markup, /class="landing-mark"/);
+  assert.match(markup, /<h1 class="landing-title" id="landing-title"><span>Tallinna<\/span><span>klubiskeene<\/span><span>showcase<\/span><span>festival<\/span><\/h1>/);
+  assert.match(markup, /<p class="landing-date" aria-label="16\.–17\. oktoober">16\.–17\.10<\/p>/);
+  assert.match(markup, /<a class="landing-nav-link" href="#programme">Ajakava<\/a>/);
+  assert.match(markup, /<a class="landing-nav-link" href="#venues">Paigad<\/a>/);
+  assert.match(markup, /<a class="landing-nav-link" href="#tickets">Piletid<\/a>/);
+  assert.match(markup, /<a class="landing-nav-link" href="#transport">Transport<\/a>/);
+  assert.match(markup, /<a class="landing-nav-link" href="#about">Meist<\/a>/);
+  assert.match(markup, /<a class="landing-nav-link" href="#about">Open call<\/a>/);
   assert.equal((markup.match(/data-sponsor-loop-root/g) || []).length, 1);
-  assert.doesNotMatch(markup, /paper-sponsor-crop|paper-sponsor-source|\/assets\/heli-sponsors\.png/);
-  assert.match(markup, /<a class="paper-wordmark" href="#home" aria-label="HELI avaleht">/);
-  assert.match(markup, /<button class="utility-menu-button"[^>]*aria-controls="utility-navigation"/);
-  assert.match(markup, /src="\/assets\/helihorizontal\.svg"/);
-  assert.doesNotMatch(markup, /paper-wordmark\.png/);
-  assert.match(markup, /class="paper-open-call"/);
-  assert.match(markup, /class="paper-map-stage"/);
-  assert.equal((markup.match(/class="paper-map-marker"/g) || []).length, 8);
-  assert.equal((markup.match(/class="paper-map-chip"/g) || []).length, 8);
-  assert.match(markup, /src="\/assets\/pixelmaplite\.png"/);
-  assert.doesNotMatch(markup, /heart2\.png|heartpink\.png|tallinn5\.png/);
-  assert.match(markup, /<a class="paper-nav-link" href="#programme">Ajakava<\/a>/);
-  assert.match(markup, /<a class="paper-nav-link" href="#venues">Paigad<\/a>/);
-  assert.match(markup, /<a class="paper-nav-link" href="#tickets">Piletid<\/a>/);
-  assert.match(markup, /<a class="paper-nav-link" href="#transport">Transport<\/a>/);
-  assert.match(markup, /<a class="paper-nav-link" href="#about">Meist<\/a>/);
+  assert.match(markup, /class="landing-sponsors"/);
+  assert.match(markup, /<\/nav><\/div><\/div><section class="landing-sponsors"/);
   assert.doesNotMatch(markup, />FAQ</);
-  assert.match(markup, /Paavli Kultuurivabrik/);
-  assert.match(markup, /class="paper-sponsors"/);
-  assert.match(markup, /class="paper-footer"/);
-  assert.match(markup, /<p>16–17 oktoober 2026<\/p>/);
   assert.doesNotMatch(markup, /paper-closing-gradient/);
 });
 
@@ -60,6 +46,9 @@ test('renderPaperHomepage removes the previous homepage structures', () => {
   assert.doesNotMatch(markup, /venue-feature-map/);
   assert.doesNotMatch(markup, /icon-strip/);
   assert.doesNotMatch(markup, /placeholder-icon/);
+  assert.doesNotMatch(markup, /paper-homepage-shell|paper-homepage-canvas/);
+  assert.doesNotMatch(markup, /paper-ticket-ticker|paper-header|paper-hero|paper-venue|paper-footer/);
+  assert.doesNotMatch(markup, /utility-menu-button|pixelmaplite|KÄEPAEL/);
 });
 
 test('all absolute homepage asset URLs are available from the public asset root', () => {
@@ -82,39 +71,59 @@ test('all absolute homepage asset URLs are available from the public asset root'
   requiredAssets.forEach((asset) => assert.equal(existsSync(new URL(`../${asset}`, import.meta.url)), true, asset));
 });
 
-test('the application preserves the Paper homepage and mounts routed utility screens', () => {
+test('the application mounts the 24.08 landing and routed utility screens', () => {
   const source = readFileSync(new URL('../src/app.js', import.meta.url), 'utf8');
 
   assert.match(source, /import \{ renderPaperHomepage \} from '\.\/home\.js'/);
-  assert.match(source, /import \{ renderSiteShell, revealRoutePanel \} from '\.\/site-shell\.js'/);
-  assert.match(source, /import \{ bindPaperVenueMap \} from '\.\/home-venue-interactions\.js'/);
-  assert.match(source, /import \{ bindOpenCallMorph \} from '\.\/open-call-morph\.js'/);
-  assert.match(source, /import \{ bindKaepaelStroke \} from '\.\/kaepael-stroke\.js'/);
+  assert.match(source, /import \{ bindLandingIntro \} from '\.\/landing-intro\.js'/);
+  assert.match(source, /import \{ bindLandingExit, playLandingReturn, prefersReducedMotion \} from '\.\/landing-transition\.js'/);
+  assert.match(source, /import \{ playUtilitySwipe, utilitySwipeAxis \} from '\.\/utility-swipe\.js'/);
+  assert.match(source, /import \{ renderSiteShell, revealRoutePanel, syncUtilityHeader, utilityNavKey, utilitySwipeDirection \} from '\.\/site-shell\.js'/);
   assert.match(source, /import \{ mountSponsorLoop \} from '\.\/sponsor-loop\.jsx'/);
   assert.match(source, /import \{ mountVenuePixel \} from '\.\/venue-pixel\.jsx'/);
-  assert.match(source, /let cleanupPaperVenueMap = \(\) => \{\};/);
+  assert.match(source, /let cleanupLandingIntro = \(\) => \{\};/);
+  assert.match(source, /let cleanupLandingExit = \(\) => \{\};/);
+  assert.match(source, /let cleanupLandingReturn = \(\) => \{\};/);
   assert.match(source, /let cleanupSponsorLoop = \(\) => \{\};/);
-  assert.match(source, /let cleanupOpenCallMorph = \(\) => \{\};/);
-  assert.match(source, /let cleanupKaepaelStroke = \(\) => \{\};/);
   assert.match(source, /clearMountedFeatures\(\);/);
-  assert.match(source, /cleanupPaperVenueMap = bindPaperVenueMap\(main, \{ mountVenuePixel \}\);/);
-  assert.match(source, /cleanupOpenCallMorph = bindOpenCallMorph\(main\);/);
-  assert.match(source, /cleanupKaepaelStroke = bindKaepaelStroke\(main\);/);
+  assert.match(source, /cleanupLandingIntro = bindLandingIntro\(main\);/);
+  assert.match(source, /cleanupLandingExit = bindLandingExit\(main,/);
+  assert.match(source, /prepareCover: mountLandingCover/);
+  assert.match(source, /landing-route-cover-frame/);
+  assert.match(source, /onSettled: settleLandingCover/);
+  assert.match(source, /is-settling/);
+  assert.match(source, /requestAnimationFrame\(\(\) => \{\s*requestAnimationFrame\(commit\)/);
+  assert.match(source, /playLandingReturn\(/);
+  assert.match(source, /returnToLanding\(/);
+  assert.match(source, /ignoreNextHashChange/);
   assert.match(source, /cleanupSponsorLoop = mountSponsorLoop\(main\.querySelector\('\[data-sponsor-loop-root\]'\)\);/);
-  assert.match(source, /cleanupUtilityInteractions = bindUtilityInteractions\(main\);/);
+  assert.match(source, /cleanupUtilityInteractions = bindUtilityInteractions\(root\);/);
   assert.match(source, /revealRoutePanel\(main\);/);
   assert.match(source, /renderPaperHomepage\(/);
   assert.match(source, /parseRoute\(window\.location\.hash\)/);
-  assert.match(source, /main\.innerHTML = renderSiteShell\(page\)/);
+  assert.match(source, /swipeToUtility\(/);
+  assert.match(source, /playUtilitySwipe\(outgoingBody, incomingBody/);
+  assert.match(source, /axis: utilitySwipeAxis\(\)/);
+  assert.match(source, /syncUtilityHeader\(/);
+  assert.match(source, /utilitySwipeDirection\(/);
+  assert.match(source, /main\.innerHTML = renderSiteShell/);
   assert.match(source, /window\.addEventListener\('hashchange', render\)/);
+  assert.doesNotMatch(source, /bindPaperVenueMap|bindOpenCallMorph|bindKaepaelStroke/);
   assert.doesNotMatch(source, /renderMarquee|renderVenueFeature|renderVisitorHero/);
 });
 
-test('the sponsor row reserves the Paper geometry for the React island', () => {
-  const css = readCorrections();
+test('the landing sponsor row reserves the Figma footer geometry for the React island', () => {
+  const css = readLanding();
 
-  assert.match(css, /\.paper-sponsors\s*\{[^}]*min-height:\s*165px;/s);
-  assert.match(css, /\.paper-sponsor-loop\s*\{[^}]*width:\s*100%;/s);
+  assert.match(css, /\.landing-sponsors\s*\{[^}]*width:\s*100%;[^}]*height:\s*165px;/s);
+  assert.match(css, /\.landing-sponsor-loop\s*\{[^}]*width:\s*100%;/s);
+  assert.match(css, /\.landing-shell\[data-exiting='true'\]\s*\{[^}]*overflow:\s*hidden;/s);
+  assert.match(css, /\.landing-route-cover\s*\{[^}]*position:\s*fixed;[^}]*inset:\s*0;[^}]*border-radius:\s*0;/s);
+  assert.match(css, /\.landing-route-cover-frame\s*\{[^}]*border-radius:\s*0;/s);
+  assert.match(css, /\.landing-route-cover\.is-settling \.landing-route-cover-frame\s*\{[^}]*transform:\s*none/s);
+  assert.match(css, /\.landing-route-cover\.is-returning\s*\{[^}]*pointer-events:\s*none;/s);
+  assert.match(css, /\.landing-sponsor-loop \.logoloop__list\s*\{[^}]*list-style:\s*none;[^}]*gap:\s*var\(--logoloop-gap\);/s);
+  assert.match(css, /\.landing-sponsor-loop \.logoloop__item\s*\{[^}]*margin-right:\s*0;/s);
   assert.doesNotMatch(css, /\.paper-sponsor-crop|\.paper-sponsor-source/);
 });
 
@@ -189,32 +198,32 @@ test('the Paper map keeps its stage geometry and accessible marker transitions',
   assert.match(css, /\.paper-map-chip\s*\{[^}]*min-height:\s*44px;/s);
   assert.match(css, /\.t-panel-slide\s*\{[^}]*filter:\s*blur\(var\(--panel-blur\)\);[^}]*pointer-events:\s*none;/s);
   assert.match(css, /\.t-panel-slide\[data-open="true"\]\s*\{[^}]*pointer-events:\s*auto;/s);
+  assert.match(css, /#main-content\.is-swiping\s*\{[^}]*overflow:\s*hidden;/s);
+  assert.match(css, /\.utility-site\.is-swipe-pane\s*\{[^}]*position:\s*absolute;/s);
+  assert.match(css, /#main-content\.is-swiping \.utility-site\.is-incoming\s*\{[^}]*background:\s*transparent;/s);
+  assert.match(css, /#main-content\.is-swiping \.utility-site\.is-incoming > \.paper-header\s*\{[^}]*visibility:\s*hidden;/s);
+  assert.match(css, /#main-content\.is-swiping \.utility-swipe-body\s*\{[^}]*will-change:\s*transform;/s);
 });
 
-test('the homepage canvas scales the 1280 artboard to the viewport like production', () => {
+test('the landing canvas scales the 1280×848 Figma frame to the viewport', () => {
+  const landing = readLanding();
   const css = readCorrections();
-  const base = readFileSync(baseCssUrl, 'utf8');
 
-  assert.match(css, /--paper-home-scale:\s*calc\(100vw \/ 1280px\);/);
-  assert.match(css, /--paper-canvas-h:\s*1406px;/);
-  assert.match(css, /\.paper-homepage-canvas\s*\{[^}]*width:\s*1280px;[^}]*transform:\s*scale\(var\(--paper-home-scale\)\);/s);
-  assert.match(base, /--paper-home-scale:\s*calc\(100vw \/ 1280px\);/);
+  assert.match(landing, /\.landing-canvas\s*\{[^}]*width:\s*1280px;[^}]*height:\s*848px;/s);
+  assert.match(landing, /\.landing-canvas\s*\{[^}]*transform:\s*scale\(min\(100vw \/ 1280, 100dvh \/ 848\)\);/s);
+  assert.match(landing, /\.landing-lockup\s*\{[^}]*left:\s*96px;[^}]*top:\s*292px;/s);
+  assert.match(landing, /\.landing-nav\s*\{[^}]*left:\s*888px;[^}]*top:\s*276px;/s);
+  assert.match(landing, /\.landing-title\s*\{[^}]*font-size:\s*52px;/s);
+  assert.match(landing, /\.landing-nav-link\s*\{[^}]*font-size:\s*52px;/s);
+  assert.match(landing, /\.landing-mark-link\s*\{[^}]*width:\s*248px;[^}]*height:\s*209px;/s);
+  assert.match(landing, /\.landing-nav-link:hover,[\s\S]*--nav-wght:\s*700;/);
+  assert.match(landing, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+  assert.match(landing, /@media\s*\(max-width:\s*1079px\)[\s\S]*\.landing-canvas\s*\{[^}]*transform:\s*none;/s);
   assert.match(css, /\.paper-header\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*none;/s);
   assert.match(css, /body\.utility-active \.utility-site\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*none;/s);
   assert.match(css, /--paper-header-h:\s*60px;/);
-  assert.match(css, /--paper-ticker-dark-h:\s*40px;/);
-  assert.match(css, /--paper-ticker-light-h:\s*40px;/);
-  assert.match(css, /\.paper-header\s*\{[^}]*height:\s*var\(--paper-header-h\);/s);
-  assert.match(css, /\.paper-ticket-ticker--dark\s*\{[^}]*height:\s*var\(--paper-ticker-dark-h\);/s);
-  assert.match(css, /\.paper-homepage-canvas\s*\{[^}]*background:\s*var\(--correction-paper\);/s);
-  assert.match(css, /\.paper-ticket-ticker--light\s*\{[^}]*height:\s*var\(--paper-ticker-light-h\);/s);
-  assert.match(css, /body\.paper-home-active \.paper-hero-lockup \.paper-hero-date\s*\{[^}]*font-size:\s*calc\(103 \/ 1019 \* 100cqi\);/s);
-  assert.match(css, /@media\s*\(max-width:\s*1079px\)/);
-  assert.match(css, /@media\s*\(max-width:\s*767px\)/);
-  assert.match(css, /@media\s*\(max-width:\s*1079px\)[\s\S]*\.paper-header \.utility-navigation\s*\{[^}]*display:\s*none;/s);
-  assert.match(css, /\.paper-header \.utility-navigation\.is-open\s*\{[^}]*display:\s*flex;/s);
-  assert.match(css, /@media\s*\(max-width:\s*1079px\)[\s\S]*\.paper-homepage-canvas\s*\{[^}]*transform:\s*none;/s);
-  assert.match(css, /@media\s*\(max-width:\s*767px\)[\s\S]*\.paper-map-frame\s*\{[^}]*height:\s*min\(72vw,\s*340px\);/s);
+  assert.match(css, /@media\s*\(max-width:\s*1079px\)[\s\S]*\.paper-header \.utility-navigation\s*\{[^}]*transform:\s*translateY\(-100%\);/s);
+  assert.match(css, /\.paper-header \.utility-navigation\.is-open\s*\{[^}]*transform:\s*translateY\(0\);/s);
 });
 
 test('the ticket banners scroll continuously and buttons invert on hover', () => {
@@ -231,24 +240,9 @@ test('the ticket banners scroll continuously and buttons invert on hover', () =>
   assert.match(css, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.paper-ticket-marquee\s*\{[^}]*animation:\s*none;/s);
 });
 
-test('the paper ticker loops gap-free and header links use motion-safe underlines', () => {
-  const markup = renderPaperHomepage(copy);
+test('utility header links keep motion-safe underlines', () => {
   const css = readStyles();
-  const corrections = readCorrections();
-  const tracks = [...markup.matchAll(/<div class="paper-ticket-track">([\s\S]*?)<\/div>/g)];
 
-  assert.equal(tracks.length, 4);
-  assert.equal((tracks[0][1].match(/class="paper-ticket-item"/g) || []).length, 24);
-  assert.match(tracks[0][1], /Paavli Kultuurivabrik/);
-  assert.match(tracks[0][1], /Tallinn/);
-  assert.doesNotMatch(tracks[0][1], /GET YOUR TICKET NOW/);
-  assert.equal((tracks[2][1].match(/class="paper-ticket-item"/g) || []).length, 8);
-  assert.match(tracks[2][1], /GET YOUR TICKET NOW/);
-  assert.match(markup, /paper-ticket-ticker--dark/);
-  assert.match(corrections, /\.paper-ticket-ticker--dark\s*\{[^}]*background:\s*var\(--correction-neutral\);/s);
-  assert.match(css, /\.paper-ticket-track\s*\{[^}]*gap:\s*10px;[^}]*padding-right:\s*10px;/s);
-  assert.doesNotMatch(css, /\.paper-ticket-ticker--light\s*\{[^}]*justify-content:\s*flex-end;/s);
-  assert.doesNotMatch(css, /\.paper-ticket-ticker--light[^}]*margin-(?:left|right):\s*auto;/s);
   assert.match(css, /\.paper-header nav \.paper-nav-link\s*\{[^}]*position:\s*relative;/s);
   assert.match(css, /\.paper-header nav \.paper-nav-link::after\s*\{[^}]*bottom:\s*-1px;[^}]*width:\s*100%;[^}]*height:\s*1px;[^}]*transform:\s*scaleX\(0\);[^}]*transform-origin:\s*left center;[^}]*transition:\s*transform var\(--duration-fast\) var\(--ease-smooth-out\);/s);
   assert.match(css, /\.paper-header nav \.paper-nav-link:hover::after,\s*\.paper-header nav \.paper-nav-link:focus-visible::after\s*\{\s*transform:\s*scaleX\(1\);\s*\}/s);
@@ -262,5 +256,5 @@ test('the Vite project exposes a production build command', () => {
 
 test('the responsive correction stylesheet loads after the legacy base styles', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-  assert.match(html, /<link rel="stylesheet" href="\/src\/styles\.css"\s*\/?>[\s\S]*<link rel="stylesheet" href="\/src\/corrections\.css"\s*\/?>/);
+  assert.match(html, /<link rel="stylesheet" href="\/src\/styles\.css"\s*\/?>[\s\S]*<link rel="stylesheet" href="\/src\/corrections\.css"\s*\/?>[\s\S]*<link rel="stylesheet" href="\/src\/landing\.css"\s*\/?>/);
 });
